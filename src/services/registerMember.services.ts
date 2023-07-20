@@ -14,7 +14,7 @@ export default class RegisterMemberService {
             const name = normalizeString(member.name, "name");
             
             
-            [ { url: member.photo_url, name: "Photo URL"}, { url: member.instagram_url, name: "Instagram URL"}, { url: member.linkedin_url, name: "LinkedIn URL"}, { url: member.lattes_url, name: "Lattes URL"}].map((params) => {
+            [ { url: member.photo_url, name: "Photo URL"}, { url: member.github_url, name: "Github URL"}, { url: member.instagram_url, name: "Instagram URL"}, { url: member.linkedin_url, name: "LinkedIn URL"}, { url: member.lattes_url, name: "Lattes URL"}].map((params) => {
                 if(!isValidURL(params.url)) throw new ValidationExceptionError(400, "Bad Request: Not Valid " + params.name); 
             });
             
@@ -37,6 +37,7 @@ export default class RegisterMemberService {
                 base64Photo: base64Photo,
                 status: member.status,
                 email: member.email,
+                github_url: member.github_url,
                 instagram_url: member.instagram_url,
                 linkedin_url: member.linkedin_url,
                 lattes_url: member.lattes_url, 

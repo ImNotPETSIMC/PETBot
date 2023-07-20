@@ -36,6 +36,12 @@ export const data = new SlashCommandBuilder()
   )
   .addStringOption(option =>
     option
+      .setName('github_url')
+      .setDescription('URL do Github do Membro do PET-SIMC;')
+      .setRequired(true)
+  )
+  .addStringOption(option =>
+    option
       .setName('instagram_url')
       .setDescription('URL do Instagram do Membro do PET-SIMC;')
       .setRequired(true)
@@ -72,6 +78,7 @@ export const execute = async (interaction: CommandInteraction) => {
     getOption("register_code"),
     <number>interaction.options.get("admission_year")!.value,
     getOption("email"),
+    getOption("github_url"),
     getOption("instagram_url"),
     getOption("linkedin_url"),
     getOption("lattes_url"),
