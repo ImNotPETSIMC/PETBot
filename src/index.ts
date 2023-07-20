@@ -8,7 +8,7 @@ const client = new Client({
 });
 
 client.once("ready", () => {
-  console.log("🔥 - Firebase Bot is Ready - 🔥");
+  console.log("🤖 🧠 - PETBot is Ready - 🧠 🤖");
 });
 
 client.on("guildCreate", async (guild) => {
