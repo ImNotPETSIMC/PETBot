@@ -42,9 +42,9 @@ export const execute = async (interaction: CommandInteraction) => {
   const attribute = getOption("attribute");
   const data = getOption("data");
 
-  const registerMemberController = new UpdateMemberController();
+  const updateMemberController = new UpdateMemberController();
 
-  const response = (await registerMemberController.handle(name, attribute, data))!;
+  const response = (await updateMemberController.handle(name, attribute, data))!;
   
   interaction.editReply(response);
 }
