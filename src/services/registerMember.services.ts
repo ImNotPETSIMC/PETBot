@@ -9,11 +9,6 @@ import { Member } from "../classes";
 export default class RegisterMemberService {
     public async registerMember(member: Member) {
         try {
-            const collection = "members";
-            const collectionDocRef = doc(firebaseDB, collection, normalizeString(member.name, "name"));
-            const name = normalizeString(member.name, "name");
-            
-            
             [ { url: member.photo_url, name: "Photo URL"}, { url: member.github_url, name: "Github URL"}, { url: member.instagram_url, name: "Instagram URL"}, { url: member.linkedin_url, name: "LinkedIn URL"}, { url: member.lattes_url, name: "Lattes URL"}].map((params) => {
                 if(!isValidURL(params.url)) throw new ValidationExceptionError(400, "Bad Request: Not Valid " + params.name); 
             });
@@ -24,8 +19,10 @@ export default class RegisterMemberService {
                 throw new ValidationExceptionError(413, "File over 1MiB");
             }
             
+            const name = normalizeString(member.name, "name");
             const base64Photo = Buffer.from(response.data).toString('base64');
-            
+            const collection = "members";
+            const collectionDocRef = doc(firebaseDB, collection, normalizeString(member.name, "name"));
             const docRef = doc(firebaseDB, collection, name);
             const snap = await getDoc(docRef);
 
