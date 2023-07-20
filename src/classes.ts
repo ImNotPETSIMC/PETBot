@@ -28,7 +28,7 @@ export class Member {
         this.register_code = register_code;
         this.admission_year = admission_year;
         this.email = email;
-        this.github_url
+        this.github_url = github_url;
         this.instagram_url = instagram_url;
         this.linkedin_url = linkedin_url;
         this.lattes_url = lattes_url;
