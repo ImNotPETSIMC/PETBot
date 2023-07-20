@@ -1,0 +1,31 @@
+{
+  "name": "petbot",
+  "version": "1.0.0",
+  "description": "PET-SIMC's discord bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsup src/index.ts --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ImNotPETSIMC/PETBot.git"
+  },
+  "author": "Enzo Weder",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ImNotPETSIMC/PETBot/issues"
+  },
+  "homepage": "https://github.com/ImNotPETSIMC/PETBot#readme",
+  "devDependencies": {
+    "tsup": "^7.1.0",
+    "tsx": "^3.12.7",
+    "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "discord.js": "^14.11.0",
+    "dotenv": "^16.3.1"
+  }
+}
