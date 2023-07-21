@@ -6,7 +6,7 @@ export const data = new SlashCommandBuilder()
   .addStringOption(option =>
     option
       .setName('name')
-      .setDescription('Matrícula do Membro do PET-SIMC;')
+      .setDescription('Nome do Membro do PET-SIMC;')
       .setRequired(true)
   )
   .setDescription("Deleta o cadastro de um membro do PET-SIMC.");
