@@ -1,5 +1,5 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import { RegisterMemberController } from "../controller/registerMember.controller";
+import { MemberController } from "../controller/member.controller";
 import { Member } from "../classes";
 
 export const data = new SlashCommandBuilder()
@@ -85,9 +85,9 @@ export const execute = async (interaction: CommandInteraction) => {
     getOption("status")
   );
 
-  const registerMemberController = new RegisterMemberController();
+  const memberController = new MemberController();
 
-  const response = (await registerMemberController.handle(newMember))!;
+  const response = (await memberController.register(newMember))!;
   
   interaction.editReply(response);
 }

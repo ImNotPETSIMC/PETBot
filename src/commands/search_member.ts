@@ -1,5 +1,5 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import { SearchMemberController } from "../controller/searchMember.controller";
+import { MemberController } from "../controller/member.controller";
 
 export const data = new SlashCommandBuilder()
   .setName("search_member")
@@ -18,9 +18,9 @@ export const execute = async (interaction: CommandInteraction) => {
   
   const register_code = getOption("register_code");
   
-  const searchMemberController = new SearchMemberController();
+  const memberController = new MemberController();
 
-  const response = (await searchMemberController.handle(register_code))!;
+  const response = (await memberController.search(register_code))!;
   
   interaction.editReply(response);
 }

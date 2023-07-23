@@ -1,5 +1,5 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import { RemoveMemberController } from "../controller/removeMember.controller";
+import { MemberController } from "../controller/member.controller";
 
 export const data = new SlashCommandBuilder()
   .setName("remove_member")
@@ -18,9 +18,9 @@ export const execute = async (interaction: CommandInteraction) => {
   
   const name = getOption("name");
   
-  const removeMemberController = new RemoveMemberController();
+  const memberController = new MemberController();
 
-  const response = (await removeMemberController.handle(name))!;
+  const response = (await memberController.remove(name))!;
   
   interaction.editReply(response);
 }

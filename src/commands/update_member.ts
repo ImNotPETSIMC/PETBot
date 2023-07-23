@@ -1,5 +1,5 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import { UpdateMemberController } from "../controller/updateMember.controller";
+import { MemberController } from "../controller/member.controller";
 
 export const data = new SlashCommandBuilder()
   .setName("update_member")
@@ -42,9 +42,9 @@ export const execute = async (interaction: CommandInteraction) => {
   const attribute = getOption("attribute");
   const data = getOption("data");
 
-  const updateMemberController = new UpdateMemberController();
+  const memberController = new MemberController();
 
-  const response = (await updateMemberController.handle(name, attribute, data))!;
+  const response = (await memberController.update(name, attribute, data))!;
   
   interaction.editReply(response);
 }
