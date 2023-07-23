@@ -81,7 +81,6 @@ export default class MemberService {
         try {
             const requestRef = { register_code: normalizeString(register_code, "register_code"), attribute: attribute, data: data };
             const collection = "members";
-            const collectionDocRef = doc(firebaseDB, collection, requestRef.register_code);
             const docRef = doc(firebaseDB, collection, requestRef.register_code);
             const snap = await getDoc(docRef);
 
@@ -100,7 +99,7 @@ export default class MemberService {
                 requestRef.attribute = "base64Photo";
             };
 
-            await setDoc(collectionDocRef, { 
+            await setDoc(docRef, { 
                 [requestRef.attribute]: requestRef.data,
             }, { merge: true });
 
