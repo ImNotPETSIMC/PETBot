@@ -5,8 +5,8 @@ import { isValidURL } from "../helper/isValidURL";
 import { normalizeString } from "../helper/normalizeString";
 import { Project } from "../classes";
 
-export default class RegisterProjectService {
-    public async registerProject(project: Project) {
+export default class ProjectService {
+    public async register(project: Project) {
         try {
             if(!isValidURL(project.photo_url)) throw new ValidationExceptionError(400, "Bad Request: Not Valid Photo URL"); 
             

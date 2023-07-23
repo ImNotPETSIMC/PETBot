@@ -1,13 +1,13 @@
 import { Embed, Project } from "../classes";
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
-import RegisterProjectService from "../services/registerProject.services";
+import ProjectService from "../services/project.service";
 
-export class RegisterProjectController {
-  public async handle(project: Project) {
-    const registerProjectService = new RegisterProjectService();
+export class ProjectController {
+  public async register(project: Project) {
+    const projectService = new ProjectService();
 
     try {
-      const response = await registerProjectService.registerProject(project);
+      const response = await projectService.register(project);
 
       return { 
         embeds: [ new Embed("✅ - Success", response.data + " was added to " + response.collection, "279732")]

@@ -1,5 +1,5 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
-import { RegisterProjectController } from "../controller/registerProject.controller";
+import { ProjectController } from "../controller/project.controller";
 import { Project } from "../classes";
 
 export const data = new SlashCommandBuilder()
@@ -43,9 +43,9 @@ export const execute = async (interaction: CommandInteraction) => {
     getOption("status")
   );
 
-  const registerProjectController = new RegisterProjectController();
+  const projectController = new ProjectController();
 
-  const response = (await registerProjectController.handle(newProject))!;
+  const response = (await projectController.register(newProject))!;
   
   interaction.editReply(response);
 }
