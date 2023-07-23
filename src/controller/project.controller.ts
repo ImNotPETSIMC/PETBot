@@ -1,3 +1,4 @@
+import { fileTypeFromBuffer } from "file-type";
 import { Embed, Project } from "../classes";
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
 import ProjectService from "../service/project.service";
@@ -70,6 +71,36 @@ export class ProjectController {
       if (error instanceof ValidationExceptionError) {
         return { 
           embeds: [ new Embed("❌ Error - "+ error.code, error.message, "9F2727") ]
+        };
+      }
+    }
+  };
+
+  public async search(name: string) {
+    const projectService = new ProjectService();
+
+    try {
+      const response = await projectService.search(name);
+      
+      const description = `
+      👤 Status - ${response.data.status}\n
+      📙 Descrição -  ${response.data.description}
+      `;
+      
+      const embed = new Embed(response.data.name, description, "2E8598");
+
+      return { 
+        embeds: [ {
+          title: embed.title, 
+          description: embed.description, 
+          color: embed.color,
+          thumbnail: { url: response.data.photo_url }
+        }]
+      };
+    } catch (error) {
+      if (error instanceof ValidationExceptionError) {
+        return { 
+          embeds: [ new Embed("❌ Error - " + error.code, error.message, "9F2727") ]
         };
       }
     }

@@ -62,7 +62,7 @@ export default class ProjectService {
     public async status(name: string, status: string) {
         try {
             const requestRef = { name: normalizeString(name, "name"), status: status };
-            const collection = "members";
+            const collection = "projects";
             const docRef = doc(firebaseDB, collection, requestRef.name);
             const snap = await getDoc(docRef);
 
@@ -106,6 +106,28 @@ export default class ProjectService {
             if(err instanceof ValidationExceptionError) throw err;
             if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
 
+            throw new ValidationExceptionError(400, err); 
+        }
+    };
+
+    public async search(name: string) {
+        try {
+            const requestRef = { name: normalizeString(name, "name") }
+            const collection = "projects";
+            const docRef = doc(firebaseDB, collection, requestRef.name);
+            const snap = await getDoc(docRef);
+            const data = snap.data()!;
+            
+            if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.name + " - Project not found"); 
+            const project = new Project(data.name, data.photo_url, data.description, data.status);
+            
+            return {
+                data: project
+            };
+        } catch(err) { 
+            if(err instanceof ValidationExceptionError) throw err;
+            if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
+            
             throw new ValidationExceptionError(400, err); 
         }
     };
