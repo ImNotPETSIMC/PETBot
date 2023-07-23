@@ -38,12 +38,14 @@ export class Member {
 
 export class Project {
     name: string;
+    type: string;
     photo_url: string;
     description: string;
     status: string;
 
-    constructor(name: string, photo_url: string, description: string, status: string) {
+    constructor(name: string, type: string, photo_url: string, description: string, status: string) {
         this.name = name;
+        this.type = type;
         this.photo_url = photo_url;
         this.description = description;
         this.status = status;

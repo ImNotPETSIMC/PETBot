@@ -83,6 +83,7 @@ export class ProjectController {
       
       const description = `
       👤 Status - ${response.data.status}\n
+      📝 Tipo - ${response.data.type}\n
       📙 Descrição -  ${response.data.description}
       `;
       

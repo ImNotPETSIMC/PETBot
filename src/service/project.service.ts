@@ -20,6 +20,7 @@ export default class ProjectService {
             
             await setDoc(collectionDocRef, { 
                 name: name,
+                type: project.type,
                 photo_url: project.photo_url,
                 description: project.description,
                 status: project.status
@@ -119,7 +120,7 @@ export default class ProjectService {
             const data = snap.data()!;
             
             if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.name + " - Project not found"); 
-            const project = new Project(data.name, data.photo_url, data.description, data.status);
+            const project = new Project(data.name, data.type, data.photo_url, data.description, data.status);
             
             return {
                 data: project

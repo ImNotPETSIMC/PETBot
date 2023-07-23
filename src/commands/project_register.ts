@@ -12,6 +12,13 @@ export const data = new SlashCommandBuilder()
   )
   .addStringOption(option =>
     option
+      .setName('type')
+      .setDescription('Tipo do Projeto do PET-SIMC;')
+      .addChoices({name: "Extensão", value:"Extensão"}, {name:"Ensino", value:"Ensino"}, {name:"Desenvolvimento", value:"Desenvolvimento"}, {name: "Outros", value:"Outros"})
+      .setRequired(true)
+  )
+  .addStringOption(option =>
+    option
       .setName('photo_url')
       .setDescription('URL da Foto do Projeto do PET-SIMC;')
       .setRequired(true)
@@ -38,6 +45,7 @@ export const execute = async (interaction: CommandInteraction) => {
 
   const newProject = new Project(
     getOption("name"), 
+    getOption("type"), 
     getOption("photo_url"), 
     getOption("description"),
     getOption("status")
