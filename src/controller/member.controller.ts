@@ -81,7 +81,7 @@ export class MemberController {
 
     try {
       const response = await memberService.search(register_code);
-
+      
       const description = `
       👤 Status - ${response.data.status}\n
       📅 Ano de Admissão -  ${response.data.admission_year}\n
@@ -93,7 +93,7 @@ export class MemberController {
       
       const embed = new Embed(response.data.register_code + " - " + response.data.name, description, "2E8598");
       const buffer =  Buffer.from(response.data.photo_url, 'base64');
-      const type = await fileTypeFromBuffer(buffer).then(response => response!.ext)
+      const type = await fileTypeFromBuffer(buffer).then(response => response!.ext);
 
       const file = {
         attachment: buffer, name: response.data.register_code + "." + type

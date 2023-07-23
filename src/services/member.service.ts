@@ -79,7 +79,7 @@ export default class MemberService {
 
     public async update(register_code: string, attribute: string, data: string) {
         try {
-            const requestRef = { register_code: normalizeString(register_code, "register_code"), data: data };
+            const requestRef = { register_code: normalizeString(register_code, "register_code"), attribute: attribute, data: data };
             const collection = "members";
             const collectionDocRef = doc(firebaseDB, collection, requestRef.register_code);
             const docRef = doc(firebaseDB, collection, requestRef.register_code);
@@ -96,11 +96,12 @@ export default class MemberService {
                     throw new ValidationExceptionError(413, "File over 1MiB");
                 }
     
-                requestRef.data = Buffer.from(data).toString('base64');
+                requestRef.data = Buffer.from(response.data).toString('base64');
+                requestRef.attribute = "base64Photo";
             };
 
             await setDoc(collectionDocRef, { 
-                [attribute]: requestRef.data,
+                [requestRef.attribute]: requestRef.data,
             }, { merge: true });
 
             return {
