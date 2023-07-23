@@ -88,7 +88,7 @@ export class ProjectController {
       📙 Descrição -  ${response.data.description}
       `;
       
-      const embed = new Embed(response.data.name, description, "2E8598");
+      const embed = new Embed(response.data.name, description, "E8C342");
 
       return { 
         embeds: [ {
