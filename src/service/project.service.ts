@@ -1,6 +1,6 @@
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
 import { firebaseDB } from "../firebaseConfig";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { isValidURL } from "../helper/isValidURL";
 import { normalizeString } from "../helper/normalizeString";
 import { Project } from "../classes";
@@ -54,6 +54,28 @@ export default class ProjectService {
             return {
                 name: snap.data().name,
                 attribute: requestRef.attribute
+            };
+        } catch(err) { 
+            if(err instanceof ValidationExceptionError) throw err;
+            if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
+
+            throw new ValidationExceptionError(400, err); 
+        }
+    };
+
+    public async remove(name: string) {
+        try {
+            const requestRef = { name: normalizeString(name, "name") };
+            const collection = "projects";
+            const docRef = doc(firebaseDB, collection, requestRef.name);
+            const snap = await getDoc(docRef);
+        
+            if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.name + " - Project not found"); 
+           
+            await deleteDoc(docRef);
+            
+            return {
+                name: snap.data().name
             };
         } catch(err) { 
             if(err instanceof ValidationExceptionError) throw err;
