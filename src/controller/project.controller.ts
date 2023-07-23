@@ -1,4 +1,3 @@
-import { fileTypeFromBuffer } from "file-type";
 import { Embed, Project } from "../classes";
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
 import ProjectService from "../service/project.service";
