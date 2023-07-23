@@ -35,3 +35,17 @@ export class Member {
         this.status = status;
     };
 }
+
+export class Project {
+    name: string;
+    photo_url: string;
+    description: string;
+    status: string;
+
+    constructor(name: string, photo_url: string, description: string, status: string) {
+        this.name = name;
+        this.photo_url = photo_url;
+        this.description = description;
+        this.status = status;
+    };
+}
