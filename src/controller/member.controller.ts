@@ -1,7 +1,7 @@
 import { fileTypeFromBuffer } from "file-type";
 import { Embed, Member } from "../classes";
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
-import MemberService from "../services/member.service";
+import MemberService from "../service/member.service";
 
 export class MemberController {
   public async register(member: Member) {

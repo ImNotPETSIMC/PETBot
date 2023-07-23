@@ -1,6 +1,6 @@
 import { Embed, Project } from "../classes";
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
-import ProjectService from "../services/project.service";
+import ProjectService from "../service/project.service";
 
 export class ProjectController {
   public async register(project: Project) {
