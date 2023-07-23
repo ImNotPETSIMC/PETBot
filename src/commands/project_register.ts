@@ -3,7 +3,7 @@ import { ProjectController } from "../controller/project.controller";
 import { Project } from "../classes";
 
 export const data = new SlashCommandBuilder()
-  .setName("register_project")
+  .setName("project_register")
   .addStringOption(option =>
     option
       .setName('name')

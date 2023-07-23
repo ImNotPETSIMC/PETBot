@@ -1,23 +1,23 @@
 import * as member_register from "./member_register"
-import * as register_project from "./register_project"
+import * as project_register from "./project_register"
 import * as member_update from "./member_update"
-import * as update_project from "./update_project"
+import * as project_update from "./project_update"
 import * as member_remove from "./member_remove"
-import * as remove_project from "./remove_project"
+import * as project_remove from "./project_remove"
 import * as member_search from "./member_search"
-import * as search_project from "./search_project"
+import * as project_search from "./project_search"
 import * as member_status from "./member_status"
-import * as status_project from "./status_project"
+import * as project_status from "./project_status"
 
 export const commands = {
     member_register,
-    register_project,
+    project_register,
     member_update,
-    update_project,
+    project_update,
     member_remove,
-    remove_project,
+    project_remove,
     member_search,
-    search_project,
+    project_search,
     member_status,
-    status_project
+    project_status
 };
