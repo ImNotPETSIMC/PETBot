@@ -26,9 +26,10 @@ export class ProjectController {
 
     try {
       const response = await projectService.remove(name);
+      console.log(response.name)
 
       return { 
-        embeds: [ new Embed("🗑️ - Remotion Completed - ", response.name + " deleted.", "279732")]
+        embeds: [ new Embed("🗑️ - Remotion Completed", response.name + " deleted.", "279732")]
       };
     } catch (error) {
       if (error instanceof ValidationExceptionError) {
