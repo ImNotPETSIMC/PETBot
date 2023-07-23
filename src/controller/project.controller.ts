@@ -39,6 +39,24 @@ export class ProjectController {
     }
   };
 
+  public async status(name: string, status: string) {
+    const projectService = new ProjectService();
+
+    try {
+      const response = await projectService.status(name, status);
+
+      return { 
+        embeds: [ new Embed("✅ - Success", response.name + " - " + response.name +"'s status" + " updated to " + response.status + ".", "279732")]
+      };
+    } catch (error) {
+      if (error instanceof ValidationExceptionError) {
+        return { 
+          embeds: [ new Embed("❌ Error - "+ error.code, error.message, "9F2727") ]
+        };
+      }
+    }
+  };
+
   public async update(name: string, attribute: string, data: string) {
     const projectService = new ProjectService();
 

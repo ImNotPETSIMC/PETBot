@@ -37,6 +37,53 @@ export default class ProjectService {
         }
     };
 
+    public async remove(name: string) {
+        try {
+            const requestRef = { name: normalizeString(name, "name") };
+            const collection = "projects";
+            const docRef = doc(firebaseDB, collection, requestRef.name);
+            const snap = await getDoc(docRef);
+        
+            if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.name + " - Project not found"); 
+           
+            await deleteDoc(docRef);
+            
+            return {
+                name: snap.data().name
+            };
+        } catch(err) { 
+            if(err instanceof ValidationExceptionError) throw err;
+            if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
+
+            throw new ValidationExceptionError(400, err); 
+        }
+    };
+
+    public async status(name: string, status: string) {
+        try {
+            const requestRef = { name: normalizeString(name, "name"), status: status };
+            const collection = "members";
+            const docRef = doc(firebaseDB, collection, requestRef.name);
+            const snap = await getDoc(docRef);
+
+            if(!snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.name + " - Não Encontrado"); 
+
+            await setDoc(docRef, { 
+                status: requestRef.status,
+            }, { merge: true });
+
+            return {
+                name: snap.data().name,
+                status: requestRef.status
+            };
+        } catch(err) { 
+            if(err instanceof ValidationExceptionError) throw err;
+            if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
+
+            throw new ValidationExceptionError(400, err); 
+        }
+    };
+
     public async update(name: string, attribute: string, data: string) {
         try {
             const requestRef = { name: normalizeString(name, "name"), attribute: attribute, data: data };
@@ -54,28 +101,6 @@ export default class ProjectService {
             return {
                 name: snap.data().name,
                 attribute: requestRef.attribute
-            };
-        } catch(err) { 
-            if(err instanceof ValidationExceptionError) throw err;
-            if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
-
-            throw new ValidationExceptionError(400, err); 
-        }
-    };
-
-    public async remove(name: string) {
-        try {
-            const requestRef = { name: normalizeString(name, "name") };
-            const collection = "projects";
-            const docRef = doc(firebaseDB, collection, requestRef.name);
-            const snap = await getDoc(docRef);
-        
-            if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.name + " - Project not found"); 
-           
-            await deleteDoc(docRef);
-            
-            return {
-                name: snap.data().name
             };
         } catch(err) { 
             if(err instanceof ValidationExceptionError) throw err;

@@ -6,6 +6,7 @@ import * as remove_member from "./remove_member"
 import * as remove_project from "./remove_project"
 import * as search_member from "./search_member"
 import * as status_member from "./status_member"
+import * as status_project from "./status_project"
 
 export const commands = {
     register_member,
@@ -15,5 +16,6 @@ export const commands = {
     remove_member,
     remove_project,
     search_member,
-    status_member
+    status_member,
+    status_project
 };
