@@ -3,7 +3,7 @@ import { MemberController } from "../controller/member.controller";
 import { Member } from "../classes";
 
 export const data = new SlashCommandBuilder()
-  .setName("register_member")
+  .setName("member_register")
   .addStringOption(option =>
     option
       .setName('name')

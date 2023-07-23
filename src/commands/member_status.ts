@@ -2,7 +2,7 @@ import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { MemberController } from "../controller/member.controller";
 
 export const data = new SlashCommandBuilder()
-  .setName("status_member")
+  .setName("member_status")
   .addStringOption(option =>
     option
       .setName('register_code')
