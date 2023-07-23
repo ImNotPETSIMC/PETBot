@@ -91,7 +91,7 @@ export class MemberController {
       💼 LinkedIn - [Acessar LinkedIn](${response.data.linkedin_url})\n
       📚 Lattes - [Acessar Lattes](${response.data.lattes_url})`;
       
-      const embed = new Embed(response.data.register_code + " - " + response.data.register_code, description, "2E8598");
+      const embed = new Embed(response.data.register_code + " - " + response.data.name, description, "2E8598");
       const buffer =  Buffer.from(response.data.photo_url, 'base64');
       const type = await fileTypeFromBuffer(buffer).then(response => response!.ext)
 
