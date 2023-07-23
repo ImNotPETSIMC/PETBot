@@ -22,11 +22,11 @@ export class MemberController {
     }
   };
 
-  public async remove(name: string) {
+  public async remove(register_code: string) {
     const memberService = new MemberService();
 
     try {
-      const response = await memberService.remove(name);
+      const response = await memberService.remove(register_code);
 
       return { 
         embeds: [ new Embed("🗑️ - Remotion Completed", response.register_code + " - " + response.name  + " deleted.", "279732")]
@@ -40,11 +40,11 @@ export class MemberController {
     }
   };
 
-  public async status(name: string, status: string) {
+  public async status(register_code: string, status: string) {
     const memberService = new MemberService();
 
     try {
-      const response = await memberService.status(name, status);
+      const response = await memberService.status(register_code, status);
 
       return { 
         embeds: [ new Embed("✅ - Success", response.register_code + " - " + response.name +"'s status" + " updated to " + response.status + ".", "279732")]
@@ -58,11 +58,11 @@ export class MemberController {
     }
   };
 
-  public async update(name: string, attribute: string, data: string) {
+  public async update(register_code: string, attribute: string, data: string) {
     const memberService = new MemberService();
 
     try {
-      const response = await memberService.update(name, attribute, data);
+      const response = await memberService.update(register_code, attribute, data);
 
       return { 
         embeds: [ new Embed("✅ - Success", response.register_code + " - " + response.name +"'s " + attribute + " updated.", "279732")]

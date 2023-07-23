@@ -5,8 +5,8 @@ export const data = new SlashCommandBuilder()
   .setName("remove_member")
   .addStringOption(option =>
     option
-      .setName('name')
-      .setDescription('Nome do Membro do PET-SIMC;')
+      .setName('register_code')
+      .setDescription('Matrícula do Membro do PET-SIMC;')
       .setRequired(true)
   )
   .setDescription("Deleta o cadastro de um membro do PET-SIMC.");
@@ -16,11 +16,11 @@ export const execute = async (interaction: CommandInteraction) => {
   
   const getOption = (option: string) => <string>interaction.options.get(option)!.value;
   
-  const name = getOption("name");
+  const register_code = getOption("register_code");
   
   const memberController = new MemberController();
 
-  const response = (await memberController.remove(name))!;
+  const response = (await memberController.remove(register_code))!;
   
   interaction.editReply(response);
 }

@@ -54,19 +54,19 @@ export default class MemberService {
         }
     };
 
-    public async remove(name: string) {
+    public async remove(register_code: string) {
         try {
-            const requestRef = {name: normalizeString(name, "name")}
+            const requestRef = {register_code: normalizeString(register_code, "register_code")}
             const collection = "members";
-            const docRef = doc(firebaseDB, collection, requestRef.name);
+            const docRef = doc(firebaseDB, collection, requestRef.register_code);
             const snap = await getDoc(docRef);
             
 
-            if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.name + " - Member not found"); 
+            if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.register_code + " - Member not found"); 
             await deleteDoc(docRef);
             
             return {
-                name: requestRef.name,
+                name: snap.data().name,
                 register_code: snap.data().register_code
             };
         } catch(err) { 
@@ -77,15 +77,15 @@ export default class MemberService {
         }
     };
 
-    public async update(name: string, attribute: string, data: string) {
+    public async update(register_code: string, attribute: string, data: string) {
         try {
-            const requestRef = { name: normalizeString(name, "name"), data: data };
+            const requestRef = { register_code: normalizeString(register_code, "register_code"), data: data };
             const collection = "members";
-            const collectionDocRef = doc(firebaseDB, collection, requestRef.name);
-            const docRef = doc(firebaseDB, collection, requestRef.name);
+            const collectionDocRef = doc(firebaseDB, collection, requestRef.register_code);
+            const docRef = doc(firebaseDB, collection, requestRef.register_code);
             const snap = await getDoc(docRef);
 
-            if(!snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.name + " - Não Encontrado"); 
+            if(!snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.register_code + " - Não Encontrado"); 
             if(attribute.includes("_url") && !isValidURL(data)) throw new ValidationExceptionError(400, "Bad Request: Not Valid URL"); 
             if(attribute.includes("admission_year")) if(isNaN(Number(data))) throw new ValidationExceptionError(400, "Bad Request: Not Valid Admission Year"); 
             if(attribute === "register_code") requestRef.data = normalizeString(data, "register_code");
@@ -104,7 +104,7 @@ export default class MemberService {
             }, { merge: true });
 
             return {
-                name: requestRef.name,
+                name: snap.data().name,
                 register_code: snap.data().register_code
             };
         } catch(err) { 
@@ -115,22 +115,22 @@ export default class MemberService {
         }
     };
 
-    public async status(name: string, status: string) {
+    public async status(register_code: string, status: string) {
         try {
-            const requestRef = { name: normalizeString(name, "name"), status: status };
+            const requestRef = { register_code: normalizeString(register_code, "register_code"), status: status };
             const collection = "members";
-            const collectionDocRef = doc(firebaseDB, collection, requestRef.name);
-            const docRef = doc(firebaseDB, collection, requestRef.name);
+            const collectionDocRef = doc(firebaseDB, collection, requestRef.register_code);
+            const docRef = doc(firebaseDB, collection, requestRef.register_code);
             const snap = await getDoc(docRef);
 
-            if(!snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.name + " - Não Encontrado"); 
+            if(!snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.register_code + " - Não Encontrado"); 
 
             await setDoc(collectionDocRef, { 
                 status: requestRef.status,
             }, { merge: true });
 
             return {
-                name: requestRef.name,
+                name: snap.data().name,
                 register_code: snap.data().register_code,
                 status: requestRef.status
             };

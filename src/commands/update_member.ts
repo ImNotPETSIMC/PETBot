@@ -5,8 +5,8 @@ export const data = new SlashCommandBuilder()
   .setName("update_member")
   .addStringOption(option =>
     option
-      .setName('name')
-      .setDescription('Nome do Membro do PET-SIMC;')
+      .setName('register_code')
+      .setDescription('Matrícula do Membro do PET-SIMC;')
       .setRequired(true)
   )
   .addStringOption(option =>
@@ -15,8 +15,8 @@ export const data = new SlashCommandBuilder()
       .setDescription('Campo de informação a ser atualizado;')
       .setRequired(true)
       .addChoices(
+        {name: "Nome", value: "name"}, 
         {name: "Foto", value: "photo_url"}, 
-        {name: "Matrícula", value: "register_code"}, 
         {name: "Ano de Admissão", value: "admission_year"},
         {name: "E-mail", value: "email"},
         {name: "Github", value: "github_url"}, 
@@ -38,13 +38,13 @@ export const execute = async (interaction: CommandInteraction) => {
   
   const getOption = (option: string) => <string>interaction.options.get(option)!.value;
   
-  const name = getOption("name");
+  const register_code = getOption("register_code");
   const attribute = getOption("attribute");
   const data = getOption("data");
 
   const memberController = new MemberController();
 
-  const response = (await memberController.update(name, attribute, data))!;
+  const response = (await memberController.update(register_code, attribute, data))!;
   
   interaction.editReply(response);
 }
