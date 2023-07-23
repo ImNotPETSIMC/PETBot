@@ -119,13 +119,12 @@ export default class MemberService {
         try {
             const requestRef = { register_code: normalizeString(register_code, "register_code"), status: status };
             const collection = "members";
-            const collectionDocRef = doc(firebaseDB, collection, requestRef.register_code);
             const docRef = doc(firebaseDB, collection, requestRef.register_code);
             const snap = await getDoc(docRef);
 
             if(!snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.register_code + " - Não Encontrado"); 
 
-            await setDoc(collectionDocRef, { 
+            await setDoc(docRef, { 
                 status: requestRef.status,
             }, { merge: true });
 
