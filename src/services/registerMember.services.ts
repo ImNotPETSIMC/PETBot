@@ -20,17 +20,18 @@ export default class RegisterMemberService {
             }
             
             const name = normalizeString(member.name, "name");
+            const register_code = normalizeString(member.register_code, "register_code");
             const base64Photo = Buffer.from(response.data).toString('base64');
             const collection = "members";
-            const collectionDocRef = doc(firebaseDB, collection, normalizeString(member.name, "name"));
-            const docRef = doc(firebaseDB, collection, name);
+            const collectionDocRef = doc(firebaseDB, collection, register_code);
+            const docRef = doc(firebaseDB, collection, register_code);
             const snap = await getDoc(docRef);
 
-            if(snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + name + " - Já Cadastrado"); 
+            if(snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + register_code + " - Já Cadastrado"); 
             
             await setDoc(collectionDocRef, { 
                 name: name,
-                register_code: normalizeString(member.register_code, "register_code"),
+                register_code: register_code,
                 base64Photo: base64Photo,
                 status: member.status,
                 email: member.email,
