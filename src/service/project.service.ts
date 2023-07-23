@@ -35,5 +35,31 @@ export default class ProjectService {
 
             throw new ValidationExceptionError(400, err); 
         }
-    }
+    };
+
+    public async update(name: string, attribute: string, data: string) {
+        try {
+            const requestRef = { name: normalizeString(name, "name"), attribute: attribute, data: data };
+            const collection = "projects";
+            const docRef = doc(firebaseDB, collection, requestRef.name);
+            const snap = await getDoc(docRef);
+
+            if(!snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.name + " - Não Encontrado"); 
+            if(attribute.includes("_url") && !isValidURL(data)) throw new ValidationExceptionError(400, "Bad Request: Not Valid URL"); 
+            
+            await setDoc(docRef, { 
+                [requestRef.attribute]: requestRef.data,
+            }, { merge: true });
+
+            return {
+                name: snap.data().name,
+                attribute: requestRef.attribute
+            };
+        } catch(err) { 
+            if(err instanceof ValidationExceptionError) throw err;
+            if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
+
+            throw new ValidationExceptionError(400, err); 
+        }
+    };
 }

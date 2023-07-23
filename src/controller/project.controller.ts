@@ -19,5 +19,23 @@ export class ProjectController {
         };
       }
     }
-  }
+  };
+
+  public async update(name: string, attribute: string, data: string) {
+    const projectService = new ProjectService();
+
+    try {
+      const response = await projectService.update(name, attribute, data);
+
+      return { 
+        embeds: [ new Embed("✅ - Success", response.name + "'s " + attribute + " updated.", "279732")]
+      };
+    } catch (error) {
+      if (error instanceof ValidationExceptionError) {
+        return { 
+          embeds: [ new Embed("❌ Error - "+ error.code, error.message, "9F2727") ]
+        };
+      }
+    }
+  };
 }

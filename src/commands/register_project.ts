@@ -29,7 +29,7 @@ export const data = new SlashCommandBuilder()
       .setRequired(true)
       .addChoices({name: "Em Andamento", value:"Em Andamento"}, {name:"Concluído", value:"Concluído"})
   )
-  .setDescription("Registra um novo Projeto do PET-SIMC.");
+  .setDescription("Registra um novo projeto do PET-SIMC.");
 
 export const execute = async (interaction: CommandInteraction) => {
   await interaction.deferReply({ephemeral: true});
