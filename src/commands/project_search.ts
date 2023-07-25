@@ -6,7 +6,7 @@ export const data = new SlashCommandBuilder()
   .addStringOption(option =>
     option
       .setName('name')
-      .setDescription('Matrícula do projeto do PET-SIMC;')
+      .setDescription('Nome do projeto do PET-SIMC;')
       .setRequired(true)
   )
   .setDescription("Busca o cadastro de um projeto do PET-SIMC.");
