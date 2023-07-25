@@ -124,16 +124,23 @@ export default class MemberService {
     public async status(register_code: string, status: string) {
         try {
             const requestRef = { register_code: normalizeString(register_code, "register_code"), status: status };
-            const collection = "members";
-            const docRef = doc(firebaseDB, collection, requestRef.register_code);
+            const docRef = doc(firebaseDB, "members", requestRef.register_code);
             const snap = await getDoc(docRef);
 
             if(!snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.register_code + " - Não Encontrado"); 
-
             await setDoc(docRef, { 
                 status: requestRef.status,
             }, { merge: true });
-
+            
+            if(status == "Ex-Petiano"){
+                const pmDocsSnap = await getDocs(collection(firebaseDB, "members_projects"));
+                pmDocsSnap.docs.map( async (doc) => { 
+                    await updateDoc(doc.ref, {
+                        [ requestRef.register_code ]: deleteField()
+                    })
+                });
+            };
+            
             return {
                 name: snap.data().name,
                 register_code: snap.data().register_code,
