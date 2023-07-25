@@ -1,6 +1,7 @@
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
 import { firebaseDB } from "../firebaseConfig";
-import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
+import Firebase from "firebase/firestore";
 import { isValidURL } from "../helper/isValidURL";
 import { normalizeString } from "../helper/normalizeString";
 import { Project } from "../classes";
@@ -128,6 +129,44 @@ export default class ProjectService {
             if(err instanceof ValidationExceptionError) throw err;
             if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
             
+            throw new ValidationExceptionError(400, err); 
+        }
+    };
+
+    
+    public async add_member(project: string, member: string) {
+        try {   
+            const requestRef = { project: normalizeString(project, "name"), member: normalizeString(member, "register_code") };
+            const collectionRef = "members_projects";
+            
+            const projectDocRef = doc(firebaseDB, "projects", requestRef.project);
+            const memberDocRef = doc(firebaseDB, "members", requestRef.member);
+            const docRef = doc(firebaseDB, collectionRef, requestRef.project);
+            
+            const projectSnap = await getDoc(projectDocRef);
+            const memberSnap = await getDoc(memberDocRef);
+            const snap = await getDoc(docRef);
+            const register = snap.get(requestRef.member);
+
+            if(!projectSnap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.project + " - Projeto Não Encontrado"); 
+            if(!memberSnap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.member + " - Membro Não Encontrado");  
+            if(register) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.member + " - Membro Já Cadastrado no Projeto " + requestRef.project);  
+
+            await setDoc(docRef, { 
+                [ requestRef.member ]: true
+            });
+            
+            return {
+                data: {
+                    member: requestRef.member, 
+                    member_name: memberSnap.data().name,
+                    project: requestRef.project, 
+                }
+            };
+        } catch(err) { 
+            if(err instanceof ValidationExceptionError) throw err;
+            if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
+
             throw new ValidationExceptionError(400, err); 
         }
     };
