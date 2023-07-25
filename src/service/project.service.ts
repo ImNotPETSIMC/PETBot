@@ -1,6 +1,6 @@
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
 import { firebaseDB } from "../firebaseConfig";
-import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { deleteDoc, deleteField, doc, getDoc, setDoc } from "firebase/firestore";
 import { isValidURL } from "../helper/isValidURL";
 import { normalizeString } from "../helper/normalizeString";
 import { Project } from "../classes";
@@ -148,11 +148,11 @@ export default class ProjectService {
 
             if(!projectSnap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.project + " - Projeto Não Encontrado"); 
             if(!memberSnap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.member + " - Membro Não Encontrado");  
-            if(register) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.member + " - Membro Já Cadastrado no Projeto " + requestRef.project);  
+            if(!register) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.member + " - Membro Já Cadastrado no Projeto " + requestRef.project);  
 
             await setDoc(docRef, { 
-                [ requestRef.member ]: true
-            });
+                [ requestRef.member ]: true,
+            },  { merge: true });
             
             return {
                 data: {
