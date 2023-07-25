@@ -26,7 +26,6 @@ export class ProjectController {
 
     try {
       const response = await projectService.remove(name);
-      console.log(response.name)
 
       return { 
         embeds: [ new Embed("🗑️ - Remotion Completed", response.name + " deleted.", "279732")]
@@ -115,6 +114,24 @@ export class ProjectController {
 
       return { 
         embeds: [ new Embed("✅ - Success", response.data.member + " - " + response.data.member_name + " was added to " + response.data.project, "279732")]
+      };
+    } catch (error) {
+      if (error instanceof ValidationExceptionError) {
+        return { 
+          embeds: [ new Embed("❌ Error - "+ error.code, error.message, "9F2727") ]
+        };
+      }
+    }
+  };
+
+  public async remove_member(project: string, member: string) {
+    const projectService = new ProjectService();
+
+    try {
+      const response = await projectService.remove_member(project, member);
+
+      return { 
+        embeds: [ new Embed("🗑️ - Remotion Completed", response.data.member + " - " + response.data.member_name + " was removed from " + response.data.project, "279732")]
       };
     } catch (error) {
       if (error instanceof ValidationExceptionError) {

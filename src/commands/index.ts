@@ -9,6 +9,7 @@ import * as project_remove from "./project_remove"
 import * as project_search from "./project_search"
 import * as project_status from "./project_status"
 import * as project_add_member from "./project_add_member";
+import * as project_remove_member from "./project_remove_member";
 
 export const commands = {
     member_register,
@@ -21,5 +22,6 @@ export const commands = {
     project_remove,
     project_search,
     project_status,
-    project_add_member
+    project_add_member,
+    project_remove_member
 };

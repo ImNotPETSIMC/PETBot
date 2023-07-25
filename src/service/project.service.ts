@@ -168,4 +168,41 @@ export default class ProjectService {
             throw new ValidationExceptionError(400, err); 
         }
     };
+
+    public async remove_member(project: string, member: string) {
+        try {   
+            const requestRef = { project: normalizeString(project, "name"), member: normalizeString(member, "register_code") };
+            const collectionRef = "members_projects";
+            
+            const projectDocRef = doc(firebaseDB, "projects", requestRef.project);
+            const memberDocRef = doc(firebaseDB, "members", requestRef.member);
+            const docRef = doc(firebaseDB, collectionRef, requestRef.project);
+            
+            const projectSnap = await getDoc(projectDocRef);
+            const memberSnap = await getDoc(memberDocRef);
+            const snap = await getDoc(docRef);
+            const register = snap.get(requestRef.member);
+
+            if(!projectSnap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.project + " - Projeto Não Encontrado"); 
+            if(!memberSnap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.member + " - Membro Não Encontrado");  
+            if(!register) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.member + " - Membro Não Cadastrado no Projeto " + requestRef.project);  
+
+            await setDoc(docRef, { 
+                [ requestRef.member ]: deleteField(),
+            },  { merge: true });
+            
+            return {
+                data: {
+                    member: requestRef.member, 
+                    member_name: memberSnap.data().name,
+                    project: requestRef.project, 
+                }
+            };
+        } catch(err) { 
+            if(err instanceof ValidationExceptionError) throw err;
+            if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
+
+            throw new ValidationExceptionError(400, err); 
+        }
+    };
 }
