@@ -12,13 +12,12 @@ export default class ProjectService {
             
             const name = normalizeString(project.name, "name");
             const collection = "projects";
-            const collectionDocRef = doc(firebaseDB, collection, normalizeString(project.name, "name"));
             const docRef = doc(firebaseDB, collection, name);
             const snap = await getDoc(docRef);
 
             if(snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + name + " - Já Cadastrado"); 
             
-            await setDoc(collectionDocRef, { 
+            await setDoc(docRef, { 
                 name: name,
                 type: project.type,
                 photo_url: project.photo_url,
