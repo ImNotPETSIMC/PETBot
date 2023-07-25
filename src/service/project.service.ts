@@ -40,13 +40,15 @@ export default class ProjectService {
     public async remove(name: string) {
         try {
             const requestRef = { name: normalizeString(name, "name") };
-            const collection = "projects";
-            const docRef = doc(firebaseDB, collection, requestRef.name);
-            const snap = await getDoc(docRef);
+            const projectsDocRef = doc(firebaseDB, "projects", requestRef.name);
+            const projectsMembersDocRef = doc(firebaseDB, "members_projects", requestRef.name);
+
+            const snap = await getDoc(projectsDocRef);
         
             if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.name + " - Project not found"); 
            
-            await deleteDoc(docRef);
+            await deleteDoc(projectsDocRef);
+            await deleteDoc(projectsMembersDocRef);
             
             return {
                 name: snap.data().name
@@ -148,7 +150,7 @@ export default class ProjectService {
 
             if(!projectSnap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.project + " - Projeto Não Encontrado"); 
             if(!memberSnap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.member + " - Membro Não Encontrado");  
-            if(!register) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.member + " - Membro Já Cadastrado no Projeto " + requestRef.project);  
+            if(register) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.member + " - Membro Já Cadastrado no Projeto " + requestRef.project);  
 
             await setDoc(docRef, { 
                 [ requestRef.member ]: true,
