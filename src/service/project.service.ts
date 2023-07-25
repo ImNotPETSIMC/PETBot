@@ -1,7 +1,6 @@
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
 import { firebaseDB } from "../firebaseConfig";
-import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, where } from "firebase/firestore";
-import Firebase from "firebase/firestore";
+import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 import { isValidURL } from "../helper/isValidURL";
 import { normalizeString } from "../helper/normalizeString";
 import { Project } from "../classes";
@@ -132,8 +131,7 @@ export default class ProjectService {
             throw new ValidationExceptionError(400, err); 
         }
     };
-
-    
+   
     public async add_member(project: string, member: string) {
         try {   
             const requestRef = { project: normalizeString(project, "name"), member: normalizeString(member, "register_code") };
