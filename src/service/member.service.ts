@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
 import { firebaseDB } from "../firebaseConfig";
-import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, deleteField, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { isValidURL } from "../helper/isValidURL";
 import { normalizeString } from "../helper/normalizeString";
 import { Member } from "../classes";
@@ -57,13 +57,19 @@ export default class MemberService {
     public async remove(register_code: string) {
         try {
             const requestRef = {register_code: normalizeString(register_code, "register_code")}
-            const collection = "members";
-            const docRef = doc(firebaseDB, collection, requestRef.register_code);
-            const snap = await getDoc(docRef);
+            const membersDocRef = doc(firebaseDB, "members", requestRef.register_code);
+            const pmDocRef = collection(firebaseDB, "members_projects");
+            const snap = await getDoc(membersDocRef);
+            const pmSnap = await getDocs(pmDocRef);
             
-
+            
             if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.register_code + " - Member not found"); 
-            await deleteDoc(docRef);
+            await deleteDoc(membersDocRef);
+            pmSnap.docs.map( async (doc) => { 
+                await updateDoc(doc.ref, {
+                    [ requestRef.register_code ]: deleteField()
+                })
+            });
             
             return {
                 name: snap.data().name,
