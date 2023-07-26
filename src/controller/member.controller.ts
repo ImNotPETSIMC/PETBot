@@ -116,4 +116,45 @@ export class MemberController {
       }
     }
   };
+
+  public async show(status: string) {
+    const memberService = new MemberService();
+
+    try {
+      const response = await memberService.show(status);
+      const registers = await Promise.all(response.data.map(async (data: Member) => { 
+        const member = new Member(data.name, data.photo_url, data.register_code, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status);
+        
+        const description = `
+        👤 Status - ${member.status}\n
+        📅 Ano de Admissão -  ${member.admission_year}\n
+        📧 Email - ${member.email}\n
+        🖥️ Github - [Acessar Github](${member.github_url})\n
+        📷 Instagram - [Acessar Instagram](${member.instagram_url})\n
+        💼 LinkedIn - [Acessar LinkedIn](${member.linkedin_url})\n
+        📚 Lattes - [Acessar Lattes](${member.lattes_url})`;
+        
+        const buffer =  Buffer.from(member.photo_url, 'base64');
+        const type = await fileTypeFromBuffer(buffer).then(response => response!.ext);
+        const file = { attachment: buffer, name: member.register_code + "." + type }
+        const embed = new Embed(member.register_code + " - " + member.name, description, "2E8598",  "attachment://" + file.name );
+        
+        return { embed, file };
+      }));
+
+      const embeds = registers.map(register => register.embed);
+      const files = registers.map(register => register.file);
+
+      return { 
+        embeds: embeds,
+        files: files
+      };
+    } catch (error) {
+      if (error instanceof ValidationExceptionError) {
+        return { 
+          embeds: [ new Embed("❌ Error - " + error.code, error.message, "9F2727") ]
+        };
+      }
+    }
+  };
 }

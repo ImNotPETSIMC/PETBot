@@ -176,4 +176,29 @@ export default class MemberService {
             throw new ValidationExceptionError(400, err); 
         }
     };
+
+    public async show(status: string) {
+        try {
+            const docRef = collection(firebaseDB, "members");
+            const snap = await getDocs(docRef);
+            const results = snap.docs.map((doc) => (doc.data()));
+            const members = results.map((data) => { 
+                if(data.status == status) {
+                    const member = new Member(data.name, data.base64Photo, data.register_code, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status);
+                    return { ...member };
+                }
+            });
+
+            if(!members.toString().length) throw new ValidationExceptionError(404,"No members with status " + status + " found"); 
+            
+            return {
+                data: members
+            };
+        } catch(err) { 
+            if(err instanceof ValidationExceptionError) throw err;
+            if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
+            
+            throw new ValidationExceptionError(400, err); 
+        }
+    };
 }
