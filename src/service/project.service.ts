@@ -1,6 +1,6 @@
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
 import { firebaseDB } from "../firebaseConfig";
-import { deleteDoc, deleteField, doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, deleteDoc, deleteField, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { isValidURL } from "../helper/isValidURL";
 import { normalizeString } from "../helper/normalizeString";
 import { Project } from "../classes";
@@ -204,6 +204,31 @@ export default class ProjectService {
             if(err instanceof ValidationExceptionError) throw err;
             if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
 
+            throw new ValidationExceptionError(400, err); 
+        }
+    };
+
+    public async show(status: string) {
+        try {
+            const docRef = collection(firebaseDB, "projects");
+            const snap = await getDocs(docRef);
+            const results = snap.docs.map((doc) => (doc.data()));
+            const projects = results.map((data) => { 
+                if(data.status == status) {
+                    const project = new Project(data.name, data.type, data.photo_url, data.description, data.status);
+                    return { ...project };
+                }
+            });
+
+            if(!projects.toString().length) throw new ValidationExceptionError(404,"No projects with status " + status + " found"); 
+            
+            return {
+                data: projects
+            };
+        } catch(err) { 
+            if(err instanceof ValidationExceptionError) throw err;
+            if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
+            
             throw new ValidationExceptionError(400, err); 
         }
     };

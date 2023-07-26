@@ -141,4 +141,36 @@ export class ProjectController {
       }
     }
   };
+
+  public async show(status: string) {
+    const projectService = new ProjectService();
+
+    try {
+      const response = await projectService.show(status);
+
+      const embeds = await Promise.all(response.data.map(async (data: any) => { 
+        const project = new Project(data.name, data.type, data.photo_url, data.description, data.status);
+        
+        const description = `
+        👤 Status - ${project.status}\n
+        📝 Tipo - ${project.type}\n
+        📙 Descrição -  ${project.description}
+        `;
+        
+        const embed = new Embed(project.name, description, "E8C342", project.photo_url);
+    
+        return { ...embed };
+      }));
+
+      return { 
+        embeds: embeds,
+      };
+    } catch (error) {
+      if (error instanceof ValidationExceptionError) {
+        return { 
+          embeds: [ new Embed("❌ Error - " + error.code, error.message, "9F2727") ]
+        };
+      }
+    }
+  };
 }
