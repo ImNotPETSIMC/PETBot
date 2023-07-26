@@ -122,7 +122,7 @@ export class MemberController {
 
     try {
       const response = await memberService.show(status);
-      const registers = await Promise.all(response.data.map(async (data: Member) => { 
+      const registers = await Promise.all(response.data.map(async (data: any) => { 
         const member = new Member(data.name, data.photo_url, data.register_code, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status);
         
         const description = `
