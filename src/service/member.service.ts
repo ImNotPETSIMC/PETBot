@@ -20,18 +20,18 @@ export default class MemberService {
             }
             
             const name = normalizeString(member.name, "name");
-            const register_code = normalizeString(member.register_code, "register_code");
+            const matricula = normalizeString(member.matricula, "matricula");
             const base64Photo = Buffer.from(response.data).toString('base64');
             const collection = "members";
-            const collectionDocRef = doc(firebaseDB, collection, register_code);
-            const docRef = doc(firebaseDB, collection, register_code);
+            const collectionDocRef = doc(firebaseDB, collection, matricula);
+            const docRef = doc(firebaseDB, collection, matricula);
             const snap = await getDoc(docRef);
 
-            if(snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + register_code + " - Já Cadastrado"); 
+            if(snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + matricula + " - Já Cadastrado"); 
             
             await setDoc(collectionDocRef, { 
                 name: name,
-                register_code: register_code,
+                matricula: matricula,
                 base64Photo: base64Photo,
                 status: member.status,
                 email: member.email,
@@ -43,7 +43,7 @@ export default class MemberService {
             });
             
             return {
-                data: name + " - " + member.register_code,
+                data: name + " - " + member.matricula,
                 collection: collection
             };
         } catch(err) { 
@@ -54,26 +54,26 @@ export default class MemberService {
         }
     };
 
-    public async remove(register_code: string) {
+    public async remove(matricula: string) {
         try {
-            const requestRef = {register_code: normalizeString(register_code, "register_code")}
-            const membersDocRef = doc(firebaseDB, "members", requestRef.register_code);
+            const requestRef = {matricula: normalizeString(matricula, "matricula")}
+            const membersDocRef = doc(firebaseDB, "members", requestRef.matricula);
             const pmDocRef = collection(firebaseDB, "members_projects");
             const snap = await getDoc(membersDocRef);
             const pmSnap = await getDocs(pmDocRef);
             
             
-            if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.register_code + " - Member not found"); 
+            if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.matricula + " - Member not found"); 
             await deleteDoc(membersDocRef);
             pmSnap.docs.map( async (doc) => { 
                 await updateDoc(doc.ref, {
-                    [ requestRef.register_code ]: deleteField()
+                    [ requestRef.matricula ]: deleteField()
                 })
             });
             
             return {
                 name: snap.data().name,
-                register_code: snap.data().register_code
+                matricula: snap.data().matricula
             };
         } catch(err) { 
             if(err instanceof ValidationExceptionError) throw err;
@@ -83,17 +83,17 @@ export default class MemberService {
         }
     };
 
-    public async update(register_code: string, attribute: string, data: string) {
+    public async update(matricula: string, attribute: string, data: string) {
         try {
-            const requestRef = { register_code: normalizeString(register_code, "register_code"), attribute: attribute, data: data };
+            const requestRef = { matricula: normalizeString(matricula, "matricula"), attribute: attribute, data: data };
             const collection = "members";
-            const docRef = doc(firebaseDB, collection, requestRef.register_code);
+            const docRef = doc(firebaseDB, collection, requestRef.matricula);
             const snap = await getDoc(docRef);
 
-            if(!snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.register_code + " - Não Encontrado"); 
+            if(!snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.matricula + " - Não Encontrado"); 
             if(attribute.includes("_url") && !isValidURL(data)) throw new ValidationExceptionError(400, "Bad Request: Not Valid URL"); 
             if(attribute.includes("admission_year")) if(isNaN(Number(data))) throw new ValidationExceptionError(400, "Bad Request: Not Valid Admission Year"); 
-            if(attribute === "register_code") requestRef.data = normalizeString(data, "register_code");
+            if(attribute === "matricula") requestRef.data = normalizeString(data, "matricula");
             if(attribute === "photo_url") {
                 const response = await Axios.get(data, {responseType: 'arraybuffer'});
                     
@@ -111,7 +111,7 @@ export default class MemberService {
 
             return {
                 name: snap.data().name,
-                register_code: snap.data().register_code
+                matricula: snap.data().matricula
             };
         } catch(err) { 
             if(err instanceof ValidationExceptionError) throw err;
@@ -121,13 +121,13 @@ export default class MemberService {
         }
     };
 
-    public async status(register_code: string, status: string) {
+    public async status(matricula: string, status: string) {
         try {
-            const requestRef = { register_code: normalizeString(register_code, "register_code"), status: status };
-            const docRef = doc(firebaseDB, "members", requestRef.register_code);
+            const requestRef = { matricula: normalizeString(matricula, "matricula"), status: status };
+            const docRef = doc(firebaseDB, "members", requestRef.matricula);
             const snap = await getDoc(docRef);
 
-            if(!snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.register_code + " - Não Encontrado"); 
+            if(!snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.matricula + " - Não Encontrado"); 
             await setDoc(docRef, { 
                 status: requestRef.status,
             }, { merge: true });
@@ -136,14 +136,14 @@ export default class MemberService {
                 const pmDocsSnap = await getDocs(collection(firebaseDB, "members_projects"));
                 pmDocsSnap.docs.map( async (doc) => { 
                     await updateDoc(doc.ref, {
-                        [ requestRef.register_code ]: deleteField()
+                        [ requestRef.matricula ]: deleteField()
                     })
                 });
             };
             
             return {
                 name: snap.data().name,
-                register_code: snap.data().register_code,
+                matricula: snap.data().matricula,
                 status: requestRef.status
             };
         } catch(err) { 
@@ -154,10 +154,10 @@ export default class MemberService {
         }
     };
 
-    public async search(register_code: string) {
+    public async search(matricula: string) {
         try {
-            const requestRef = {register_code: normalizeString(register_code, "register_code")}
-            const docRef = doc(firebaseDB, "members", requestRef.register_code);
+            const requestRef = {matricula: normalizeString(matricula, "matricula")}
+            const docRef = doc(firebaseDB, "members", requestRef.matricula);
             const pmDocRef = collection(firebaseDB, "members_projects");
           
             const snap = await getDoc(docRef);
@@ -165,9 +165,9 @@ export default class MemberService {
             
             const data = snap.data()!;
             
-            if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.register_code + " - Member not found"); 
-            const member = new Member(data.name, data.base64Photo, data.register_code, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status, []);      
-            pmSnap.docs.map((doc) => { if (doc.get(requestRef.register_code)) member.projects.push(" " + doc.id) });
+            if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.matricula + " - Member not found"); 
+            const member = new Member(data.name, data.base64Photo, data.matricula, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status, []);      
+            pmSnap.docs.map((doc) => { if (doc.get(requestRef.matricula)) member.projects.push(" " + doc.id) });
             if(!member.projects.length) member.projects.push("🚫")
             
             return {
@@ -192,8 +192,8 @@ export default class MemberService {
             const results = snap.docs.map((doc) => (doc.data()));
             const members = results.map((data) => { 
                 if(data.status == status) {
-                    const member = new Member(data.name, data.base64Photo, data.register_code, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status, []);
-                    pmSnap.docs.map((doc) => { if (doc.get(data.register_code)) member.projects.push(" " + doc.id) });
+                    const member = new Member(data.name, data.base64Photo, data.matricula, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status, []);
+                    pmSnap.docs.map((doc) => { if (doc.get(data.matricula)) member.projects.push(" " + doc.id) });
                     if(!member.projects.length) member.projects.push("🚫")     
                     return { ...member };
                 }

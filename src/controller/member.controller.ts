@@ -22,14 +22,14 @@ export class MemberController {
     }
   };
 
-  public async remove(register_code: string) {
+  public async remove(matricula: string) {
     const memberService = new MemberService();
 
     try {
-      const response = await memberService.remove(register_code);
+      const response = await memberService.remove(matricula);
 
       return { 
-        embeds: [ new Embed("🗑️ - Remotion Completed", response.register_code + " - " + response.name  + " deleted.", "279732")]
+        embeds: [ new Embed("🗑️ - Remotion Completed", response.matricula + " - " + response.name  + " deleted.", "279732")]
       };
     } catch (error) {
       if (error instanceof ValidationExceptionError) {
@@ -40,14 +40,14 @@ export class MemberController {
     }
   };
 
-  public async status(register_code: string, status: string) {
+  public async status(matricula: string, status: string) {
     const memberService = new MemberService();
 
     try {
-      const response = await memberService.status(register_code, status);
+      const response = await memberService.status(matricula, status);
 
       return { 
-        embeds: [ new Embed("✅ - Success", response.register_code + " - " + response.name +"'s status" + " updated to " + response.status + ".", "279732")]
+        embeds: [ new Embed("✅ - Success", response.matricula + " - " + response.name +"'s status" + " updated to " + response.status + ".", "279732")]
       };
     } catch (error) {
       if (error instanceof ValidationExceptionError) {
@@ -58,14 +58,14 @@ export class MemberController {
     }
   };
 
-  public async update(register_code: string, attribute: string, data: string) {
+  public async update(matricula: string, attribute: string, data: string) {
     const memberService = new MemberService();
 
     try {
-      const response = await memberService.update(register_code, attribute, data);
+      const response = await memberService.update(matricula, attribute, data);
 
       return { 
-        embeds: [ new Embed("✅ - Success", response.register_code + " - " + response.name +"'s " + attribute + " updated.", "279732")]
+        embeds: [ new Embed("✅ - Success", response.matricula + " - " + response.name +"'s " + attribute + " updated.", "279732")]
       };
     } catch (error) {
       if (error instanceof ValidationExceptionError) {
@@ -76,11 +76,11 @@ export class MemberController {
     }
   };
 
-  public async search(register_code: string) {
+  public async search(matricula: string) {
     const memberService = new MemberService();
 
     try {
-      const response = await memberService.search(register_code);
+      const response = await memberService.search(matricula);
       
       const description = `
       👤 Status - ${response.data.status}\n
@@ -92,12 +92,12 @@ export class MemberController {
       📚 Lattes - [Acessar Lattes](${response.data.lattes_url})\n
       🛠️ Projetos - ${response.data.projects}`
       
-      const embed = new Embed(response.data.register_code + " - " + response.data.name, description, "2E8598");
+      const embed = new Embed(response.data.matricula + " - " + response.data.name, description, "2E8598");
       const buffer =  Buffer.from(response.data.photo_url, 'base64');
       const type = await fileTypeFromBuffer(buffer).then(response => response!.ext);
 
       const file = {
-        attachment: buffer, name: response.data.register_code + "." + type
+        attachment: buffer, name: response.data.matricula + "." + type
       }
 
       return { 
@@ -124,7 +124,7 @@ export class MemberController {
     try {
       const response = await memberService.show(status);
       const registers = await Promise.all(response.data.map(async (data: any) => { 
-        const member = new Member(data.name, data.photo_url, data.register_code, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status, data.projects);
+        const member = new Member(data.name, data.photo_url, data.matricula, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status, data.projects);
         const description = `
         👤 Status - ${member.status}\n
         📅 Ano de Admissão -  ${member.admission_year}\n
@@ -137,8 +137,8 @@ export class MemberController {
         
         const buffer =  Buffer.from(member.photo_url, 'base64');
         const type = await fileTypeFromBuffer(buffer).then(response => response!.ext);
-        const file = { attachment: buffer, name: member.register_code + "." + type }
-        const embed = new Embed(member.register_code + " - " + member.name, description, "2E8598",  "attachment://" + file.name );
+        const file = { attachment: buffer, name: member.matricula + "." + type }
+        const embed = new Embed(member.matricula + " - " + member.name, description, "2E8598",  "attachment://" + file.name );
         
         return { embed, file };
       }));

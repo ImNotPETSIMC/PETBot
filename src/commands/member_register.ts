@@ -18,7 +18,7 @@ export const data = new SlashCommandBuilder()
   )
   .addStringOption(option =>
     option
-      .setName('register_code')
+      .setName('matricula')
       .setDescription('Matrícula do Membro do PET-SIMC;')
       .setRequired(true)
   )
@@ -75,7 +75,7 @@ export const execute = async (interaction: CommandInteraction) => {
   const newMember = new Member(
     getOption("name"), 
     getOption("photo_url"), 
-    getOption("register_code"),
+    getOption("matricula"),
     <number>interaction.options.get("admission_year")!.value,
     getOption("email"),
     getOption("github_url"),

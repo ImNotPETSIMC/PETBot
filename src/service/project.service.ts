@@ -136,7 +136,7 @@ export default class ProjectService {
    
     public async add_member(project: string, member: string) {
         try {   
-            const requestRef = { project: normalizeString(project, "name"), member: normalizeString(member, "register_code") };
+            const requestRef = { project: normalizeString(project, "name"), member: normalizeString(member, "matricula") };
             const collectionRef = "members_projects";
             
             const projectDocRef = doc(firebaseDB, "projects", requestRef.project);
@@ -173,7 +173,7 @@ export default class ProjectService {
 
     public async remove_member(project: string, member: string) {
         try {   
-            const requestRef = { project: normalizeString(project, "name"), member: normalizeString(member, "register_code") };
+            const requestRef = { project: normalizeString(project, "name"), member: normalizeString(member, "matricula") };
             const collectionRef = "members_projects";
             
             const projectDocRef = doc(firebaseDB, "projects", requestRef.project);

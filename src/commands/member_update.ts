@@ -5,7 +5,7 @@ export const data = new SlashCommandBuilder()
   .setName("member_update")
   .addStringOption(option =>
     option
-      .setName('register_code')
+      .setName('matricula')
       .setDescription('Matrícula do Membro do PET-SIMC;')
       .setRequired(true)
   )
@@ -38,13 +38,13 @@ export const execute = async (interaction: CommandInteraction) => {
   
   const getOption = (option: string) => <string>interaction.options.get(option)!.value;
   
-  const register_code = getOption("register_code");
+  const matricula = getOption("matricula");
   const attribute = getOption("attribute");
   const data = getOption("data");
 
   const memberController = new MemberController();
 
-  const response = (await memberController.update(register_code, attribute, data))!;
+  const response = (await memberController.update(matricula, attribute, data))!;
   
   interaction.editReply(response);
 }
