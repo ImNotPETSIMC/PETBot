@@ -89,7 +89,8 @@ export class MemberController {
       🖥️ Github - [Acessar Github](${response.data.github_url})\n
       📷 Instagram - [Acessar Instagram](${response.data.instagram_url})\n
       💼 LinkedIn - [Acessar LinkedIn](${response.data.linkedin_url})\n
-      📚 Lattes - [Acessar Lattes](${response.data.lattes_url})`;
+      📚 Lattes - [Acessar Lattes](${response.data.lattes_url})\n
+      🛠️ Projetos - ${response.data.projects}`
       
       const embed = new Embed(response.data.register_code + " - " + response.data.name, description, "2E8598");
       const buffer =  Buffer.from(response.data.photo_url, 'base64');
@@ -123,8 +124,7 @@ export class MemberController {
     try {
       const response = await memberService.show(status);
       const registers = await Promise.all(response.data.map(async (data: any) => { 
-        const member = new Member(data.name, data.photo_url, data.register_code, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status);
-        
+        const member = new Member(data.name, data.photo_url, data.register_code, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status, data.projects);
         const description = `
         👤 Status - ${member.status}\n
         📅 Ano de Admissão -  ${member.admission_year}\n
@@ -132,7 +132,8 @@ export class MemberController {
         🖥️ Github - [Acessar Github](${member.github_url})\n
         📷 Instagram - [Acessar Instagram](${member.instagram_url})\n
         💼 LinkedIn - [Acessar LinkedIn](${member.linkedin_url})\n
-        📚 Lattes - [Acessar Lattes](${member.lattes_url})`;
+        📚 Lattes - [Acessar Lattes](${member.lattes_url})\n
+        🛠️ Projetos - ${member.projects}`;
         
         const buffer =  Buffer.from(member.photo_url, 'base64');
         const type = await fileTypeFromBuffer(buffer).then(response => response!.ext);

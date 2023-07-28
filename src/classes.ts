@@ -23,8 +23,9 @@ export class Member {
     linkedin_url: string;
     lattes_url: string;
     status: string;
+    projects: string[];
 
-    constructor(name: string, photo_url: string, register_code: string, admission_year: number, email: string, github_url: string, instagram_url: string, linkedin_url: string, lattes_url: string, status: string) {
+    constructor(name: string, photo_url: string, register_code: string, admission_year: number, email: string, github_url: string, instagram_url: string, linkedin_url: string, lattes_url: string, status: string, projects?: string[]) {
         this.name = name;
         this.photo_url = photo_url;
         this.register_code = register_code;
@@ -35,6 +36,7 @@ export class Member {
         this.linkedin_url = linkedin_url;
         this.lattes_url = lattes_url;
         this.status = status;
+        if(projects) this.projects = projects;
     };
 }
 

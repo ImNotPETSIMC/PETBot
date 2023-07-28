@@ -157,14 +157,18 @@ export default class MemberService {
     public async search(register_code: string) {
         try {
             const requestRef = {register_code: normalizeString(register_code, "register_code")}
-            const collection = "members";
-            const docRef = doc(firebaseDB, collection, requestRef.register_code);
+            const docRef = doc(firebaseDB, "members", requestRef.register_code);
+            const pmDocRef = collection(firebaseDB, "members_projects");
+          
             const snap = await getDoc(docRef);
+            const pmSnap = await getDocs(pmDocRef);
+            
             const data = snap.data()!;
             
-            
             if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.register_code + " - Member not found"); 
-            const member = new Member(data.name, data.base64Photo, data.register_code, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status);
+            const member = new Member(data.name, data.base64Photo, data.register_code, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status, []);      
+            pmSnap.docs.map((doc) => { if (doc.get(requestRef.register_code)) member.projects.push(" " + doc.id) });
+            if(!member.projects.length) member.projects.push("🚫")
             
             return {
                 data: member
@@ -180,11 +184,17 @@ export default class MemberService {
     public async show(status: string) {
         try {
             const docRef = collection(firebaseDB, "members");
+            const pmDocRef = collection(firebaseDB, "members_projects");
+
             const snap = await getDocs(docRef);
+            const pmSnap = await getDocs(pmDocRef);
+
             const results = snap.docs.map((doc) => (doc.data()));
             const members = results.map((data) => { 
                 if(data.status == status) {
-                    const member = new Member(data.name, data.base64Photo, data.register_code, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status);
+                    const member = new Member(data.name, data.base64Photo, data.register_code, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status, []);
+                    pmSnap.docs.map((doc) => { if (doc.get(data.register_code)) member.projects.push(" " + doc.id) });
+                    if(!member.projects.length) member.projects.push("🚫")     
                     return { ...member };
                 }
             });
