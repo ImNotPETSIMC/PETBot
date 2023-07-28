@@ -15,8 +15,8 @@ export default class MemberService {
             
             const response = await Axios.get(member.photo_url, {responseType: 'arraybuffer'});
             
-            if(response.headers["content-length"] > 1048576) {
-                throw new ValidationExceptionError(413, "File over 1MiB");
+            if(response.headers["content-length"] > 943718) {
+                throw new ValidationExceptionError(413, "File over 0.9MiB");
             }
             
             const name = normalizeString(member.name, "name");
@@ -97,8 +97,8 @@ export default class MemberService {
             if(attribute === "photo_url") {
                 const response = await Axios.get(data, {responseType: 'arraybuffer'});
                     
-                if(response.headers["content-length"] > 1048576) {
-                    throw new ValidationExceptionError(413, "File over 1MiB");
+                if(response.headers["content-length"] > 943718) {
+                    throw new ValidationExceptionError(413, "File over 0.9MiB");
                 }
     
                 requestRef.data = Buffer.from(response.data).toString('base64');
