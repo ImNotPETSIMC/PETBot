@@ -218,9 +218,9 @@ export default class ProjectService {
                     const project = new Project(data.name, data.type, data.photo_url, data.description, data.status);
                     return { ...project };
                 }
-            });
+            }).filter( project => { if (project) return project });
 
-            if(!projects[0]) throw new ValidationExceptionError(404,"No projects with status " + status + " found"); 
+            if(!projects.length) throw new ValidationExceptionError(404,"No projects with status " + status + " found"); 
             
             return {
                 data: projects

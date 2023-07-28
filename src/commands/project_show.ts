@@ -8,7 +8,7 @@ export const data = new SlashCommandBuilder()
       .setName('status')
       .setDescription('Coleção de projetos PET-SIMC;')
       .setRequired(true)
-      .addChoices({name: "Em Andamento", value:"Em Andamento"}, {name:"Finalizado", value:"Finalizado"})
+      .addChoices({name: "Em Andamento", value:"Em Andamento"}, {name:"Concluído", value:"Concluído"})
   )
   .setDescription("Mostra a lista de projetos concluídos e em andamento do PET-SIMC.");
 
