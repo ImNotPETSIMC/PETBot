@@ -220,7 +220,7 @@ export default class ProjectService {
                 }
             });
 
-            if(!projects.toString().length) throw new ValidationExceptionError(404,"No projects with status " + status + " found"); 
+            if(!projects[0]) throw new ValidationExceptionError(404,"No projects with status " + status + " found"); 
             
             return {
                 data: projects
