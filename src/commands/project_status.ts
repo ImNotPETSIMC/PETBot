@@ -19,7 +19,7 @@ export const data = new SlashCommandBuilder()
   .setDescription("Atualiza o status de um projeto do PET-SIMC.");
 
 export const execute = async (interaction: CommandInteraction) => {
-  await interaction.deferReply({ephemeral: true});
+  await interaction.deferReply();
   
   const getOption = (option: string) => <string>interaction.options.get(option)!.value;
   

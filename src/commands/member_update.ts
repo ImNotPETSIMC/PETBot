@@ -34,7 +34,7 @@ export const data = new SlashCommandBuilder()
   .setDescription("Atualiza as informações de um membro do PET-SIMC.");
 
 export const execute = async (interaction: CommandInteraction) => {
-  await interaction.deferReply({ephemeral: true});
+  await interaction.deferReply();
   
   const getOption = (option: string) => <string>interaction.options.get(option)!.value;
   

@@ -12,7 +12,7 @@ export const data = new SlashCommandBuilder()
   .setDescription("Deleta o cadastro de um projeto do PET-SIMC.");
 
 export const execute = async (interaction: CommandInteraction) => {
-  await interaction.deferReply({ephemeral: true});
+  await interaction.deferReply();
   
   const getOption = (option: string) => <string>interaction.options.get(option)!.value;
   
