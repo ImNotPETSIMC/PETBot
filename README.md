@@ -24,39 +24,39 @@ Uses Firestore as main form of storage.
 -----
 
 <h3>Member Register</h3>
-<img src="src/assets/member_register.png" title="Member Register"></img>
+<img src="src/assets/member_register.png" title="Member Register" height="500px"></img>
 Using the "member_register" command you can register a new PET-SIMC member/ex-member.<br>
 Photos are downloaded and stored in Firestore, limited to 1MiB.  
 
 -----
 
 <h3>Member Update</h3>
-<img src="src/assets/member_update.png" title="Member Update"></img>
+<img src="src/assets/member_update.png" title="Member Update" height="500px"></img>
 Using the "member_update" command you can update a PET-SIMC member/ex-member information.<br>
 Photos are downloaded and stored in Firestore, limited to 1MiB.  
 
 -----
 
 <h3>Member Remove</h3>
-<img src="src/assets/member_remove.png" title="Member Remove"></img>
+<img src="src/assets/member_remove.png" title="Member Remove" height="500px"></img>
 Using the "member_remove" command you can delete a PET-SIMC member/ex-member register.<br>
 
 -----
 
 <h3>Member Search</h3>
-<img src="src/assets/member_search.png" title="Member Search"></img>
+<img src="src/assets/member_search.png" title="Member Search" height="500px"></img>
 Using the "member_search" command you can retrieve a PET-SIMC member/ex-member register.<br>
 
 -----
 
 <h3>Member Status</h3>
-<img src="src/assets/member_status.png" title="Member Status"></img>
+<img src="src/assets/member_status.png" title="Member Status" height="500px"></img>
 Using the "member_status" command you can update a PET-SIMC member/ex-member status to member or ex-member.<br>
 
 -----
 
 <h3>Member Show</h3>
-<img src="src/assets/member_show.png" title="Member Show"></img>
+<img src="src/assets/member_show.png" title="Member Show" height="500px"></img>
 Using the "member_show" command you can retrieve all PET-SIMC member/ex-member registers.<br>
 
 -----
