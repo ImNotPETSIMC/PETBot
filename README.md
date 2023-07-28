@@ -7,18 +7,8 @@ Uses Firestore as main form of storage.
 <h1>Features:</h1>
 
 <ul>
-    <li>Member Register</li>
-    <li>Member Update</li>
-    <li>Member Remove</li>
-    <li>Member Search</li>
-    <li>Member Status</li>
-    <li>Member Show</li>
-    <li>Project Register</li>
-    <li>Project Update</li>
-    <li>Project Remove</li>
-    <li>Project Search</li>
-    <li>Project Status</li>
-    <li>Project Show</li>
+    <li>Member Register / Update / Remove / Search / Status / Show</li>
+    <li>Project Register / Update / Remove / Search / Status / Show</li>
 </ul>
 
 -----
