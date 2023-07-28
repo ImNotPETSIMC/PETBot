@@ -35,7 +35,7 @@ Using the "member_remove" command you can delete a PET-SIMC member/ex-member reg
 
 <h3>Member Search</h3>
 <img src="src/assets/member_search.png" title="Member Search" height="500px"></img>
-Using the "member_search" command you can retrieve a PET-SIMC member/ex-member register.<br>
+Using the "member_search" command you can retrieve a specific PET-SIMC member/ex-member register.<br>
 
 -----
 
@@ -48,6 +48,44 @@ Using the "member_status" command you can update a PET-SIMC member/ex-member sta
 <h3>Member Show</h3>
 <img src="src/assets/member_show.png" title="Member Show" height="500px"></img>
 Using the "member_show" command you can retrieve all PET-SIMC member/ex-member registers.<br>
+
+-----
+
+<h3>Project Register</h3>
+<img src="src/assets/project_register.png" title="Project Register" height="500px"></img>
+Using the "project_register" command you can register a new PET-SIMC project.<br>
+Photos are not downloaded to avoid limitations, use a stable photo url.  
+
+-----
+
+<h3>Project Update</h3>
+<img src="src/assets/project_update.png" title="Project Update" height="500px"></img>
+Using the "project_update" command you can update a PET-SIMC project information.<br>
+Photos are not downloaded to avoid limitations, use a stable photo url. 
+
+-----
+
+<h3>Project Remove</h3>
+<img src="src/assets/project_remove.png" title="Project Remove" height="500px"></img>
+Using the "project_remove" command you can delete a PET-SIMC project register.<br>
+
+-----
+
+<h3>Project Search</h3>
+<img src="src/assets/project_search.png" title="Project Search" height="500px"></img>
+Using the "project_search" command you can retrieve a specific PET-SIMC project register.<br>
+
+-----
+
+<h3>Project Status</h3>
+<img src="src/assets/project_status.png" title="Project Status" height="500px"></img>
+Using the "project_status" command you can update a PET-SIMC project status to "On-Going" or "Concluded".<br>
+
+-----
+
+<h3>Project Show</h3>
+<img src="src/assets/project_show.png" title="Project Show" height="500px"></img>
+Using the "project_show" command you can retrieve all PET-SIMC projects registers.<br>
 
 -----
 
