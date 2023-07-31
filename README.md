@@ -14,77 +14,77 @@ Uses Firestore as main form of storage.
 -----
 
 <h3>Member Register</h3>
-<img src="src/assets/member_register.png" title="Member Register" height="500px" width="500px"></img>
+<img src="src/assets/member_register.png" title="Member Register" width=50% height=50%>></img>
 Using the "member_register" command you can register a new PET-SIMC member/ex-member.<br>
 Photos are downloaded and stored in Firestore, limited to 1MiB.  
 
 -----
 
 <h3>Member Update</h3>
-<img src="src/assets/member_update.png" title="Member Update" height="500px" width="500px"></img>
+<img src="src/assets/member_update.png" title="Member Update" width=50% height=50%>></img>
 Using the "member_update" command you can update a PET-SIMC member/ex-member information.<br>
 Photos are downloaded and stored in Firestore, limited to 1MiB.  
 
 -----
 
 <h3>Member Remove</h3>
-<img src="src/assets/member_remove.png" title="Member Remove" height="500px" width="500px"></img>
+<img src="src/assets/member_remove.png" title="Member Remove" width=50% height=50%>></img>
 Using the "member_remove" command you can delete a PET-SIMC member/ex-member register.<br>
 
 -----
 
 <h3>Member Search</h3>
-<img src="src/assets/member_search.png" title="Member Search" height="500px" width="500px"></img>
+<img src="src/assets/member_search.png" title="Member Search" width=50% height=50%>></img>
 Using the "member_search" command you can retrieve a specific PET-SIMC member/ex-member register.<br>
 
 -----
 
 <h3>Member Status</h3>
-<img src="src/assets/member_status.png" title="Member Status" height="500px" width="500px"></img>
+<img src="src/assets/member_status.png" title="Member Status" width=50% height=50%>></img>
 Using the "member_status" command you can update a PET-SIMC member/ex-member status to member or ex-member.<br>
 
 -----
 
 <h3>Member Show</h3>
-<img src="src/assets/member_show.png" title="Member Show" height="500px" width="500px"></img>
+<img src="src/assets/member_show.png" title="Member Show" width=50% height=50%>></img>
 Using the "member_show" command you can retrieve all PET-SIMC member/ex-member registers.<br>
 
 -----
 
 <h3>Project Register</h3>
-<img src="src/assets/project_register.png" title="Project Register" height="500px" width="500px"></img>
+<img src="src/assets/project_register.png" title="Project Register" width=50% height=50%>></img>
 Using the "project_register" command you can register a new PET-SIMC project.<br>
 Photos are not downloaded to avoid limitations, use a stable photo url.  
 
 -----
 
 <h3>Project Update</h3>
-<img src="src/assets/project_update.png" title="Project Update" height="500px" width="500px"></img>
+<img src="src/assets/project_update.png" title="Project Update" width=50% height=50%>></img>
 Using the "project_update" command you can update a PET-SIMC project information.<br>
 Photos are not downloaded to avoid limitations, use a stable photo url. 
 
 -----
 
 <h3>Project Remove</h3>
-<img src="src/assets/project_remove.png" title="Project Remove" height="500px" width="500px"></img>
+<img src="src/assets/project_remove.png" title="Project Remove" width=50% height=50%>></img>
 Using the "project_remove" command you can delete a PET-SIMC project register.<br>
 
 -----
 
 <h3>Project Search</h3>
-<img src="src/assets/project_search.png" title="Project Search" height="500px" width="500px"></img>
+<img src="src/assets/project_search.png" title="Project Search" width=50% height=50%>></img>
 Using the "project_search" command you can retrieve a specific PET-SIMC project register.<br>
 
 -----
 
 <h3>Project Status</h3>
-<img src="src/assets/project_status.png" title="Project Status" height="500px" width="500px"></img>
+<img src="src/assets/project_status.png" title="Project Status" width=50% height=50%>></img>
 Using the "project_status" command you can update a PET-SIMC project status to "On-Going" or "Concluded".<br>
 
 -----
 
 <h3>Project Show</h3>
-<img src="src/assets/project_show.png" title="Project Show" height="500px" width="500px"></img>
+<img src="src/assets/project_show.png" title="Project Show" width=50% height=50%>></img>
 Using the "project_show" command you can retrieve all PET-SIMC projects registers.<br>
 
 -----
