@@ -1,6 +1,6 @@
 # PETBot
 
-PETBot is a discord bot created to help managing and storing PET-SIMC related information.
+PETBot is a discord bot created to help managing and storing PET-SIMC related information.<br>
 Uses Firestore as main form of storage.
 
 
