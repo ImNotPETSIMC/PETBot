@@ -14,7 +14,7 @@ export const data = new SlashCommandBuilder()
       .setName('status')
       .setDescription('Status do Membro do PET-SIMC;')
       .setRequired(true)
-      .addChoices({name: "Petiano", value:"Petiano"}, {name:"Ex-Petiano", value:"Ex-Petiano"})
+      .addChoices({name: "Petiano", value:"Petiano"}, {name:"Ex-Petiano", value:"Ex-Petiano"}, {name: "Tutor", value:"Tutor"}, {name: "Ex-Tutor", value:"Ex-Tutor"})
   )
   .setDescription("Atualiza o status de um membro ou ex-membro do PET-SIMC.");
 

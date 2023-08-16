@@ -132,7 +132,7 @@ export default class MemberService {
                 status: requestRef.status,
             }, { merge: true });
             
-            if(status == "Ex-Petiano"){
+            if(status.includes("Ex")){
                 const pmDocsSnap = await getDocs(collection(firebaseDB, "members_projects"));
                 pmDocsSnap.docs.map( async (doc) => { 
                     await updateDoc(doc.ref, {
