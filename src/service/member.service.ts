@@ -5,6 +5,7 @@ import { collection, deleteDoc, deleteField, doc, getDoc, getDocs, setDoc, updat
 import { isValidURL } from "../helper/isValidURL";
 import { normalizeString } from "../helper/normalizeString";
 import { Member } from "../classes";
+import { prisma } from "../prismaConfig";
 
 export default class MemberService {
     public async register(member: Member) {
@@ -28,18 +29,20 @@ export default class MemberService {
             const snap = await getDoc(docRef);
 
             if(snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + matricula + " - Já Cadastrado"); 
-            
-            await setDoc(collectionDocRef, { 
-                name: name,
-                matricula: matricula,
-                base64Photo: base64Photo,
-                status: member.status,
-                email: member.email,
-                github_url: member.github_url,
-                instagram_url: member.instagram_url,
-                linkedin_url: member.linkedin_url,
-                lattes_url: member.lattes_url, 
-                admission_year: member.admission_year
+
+            const registerMember = await prisma.member.create({
+                data:{
+                    name: name,
+                    matricula: matricula,
+                    base64Photo: base64Photo,
+                    status: member.status,
+                    email: member.email,
+                    github_url: member.github_url,
+                    instagram_url: member.instagram_url,
+                    linkedin_url: member.linkedin_url,
+                    lattes_url: member.lattes_url, 
+                    admission_year: member.admission_year
+                }
             });
             
             return {
