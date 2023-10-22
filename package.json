@@ -20,13 +20,13 @@
   },
   "homepage": "https://github.com/ImNotPETSIMC/PETBot#readme",
   "devDependencies": {
-    "prisma": "^5.3.1",
+    "prisma": "^5.4.2",
     "tsup": "^7.1.0",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@prisma/client": "^5.3.1",
+    "@prisma/client": "^5.4.2",
     "axios": "^1.4.0",
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
