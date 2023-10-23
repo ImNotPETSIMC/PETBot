@@ -23,14 +23,8 @@ export default class MemberService {
             const name = normalizeString(member.name, "name");
             const matricula = normalizeString(member.matricula, "matricula");
             const base64Photo = Buffer.from(response.data).toString('base64');
-            const collection = "members";
-            const collectionDocRef = doc(firebaseDB, collection, matricula);
-            const docRef = doc(firebaseDB, collection, matricula);
-            const snap = await getDoc(docRef);
 
-            if(snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + matricula + " - Já Cadastrado"); 
-
-            const registerMember = await prisma.member.create({
+            await prisma.member.create({
                 data:{
                     name: name,
                     matricula: matricula,
@@ -51,6 +45,7 @@ export default class MemberService {
             };
         } catch(err) { 
             if(err instanceof ValidationExceptionError) throw err;
+            if(err.code == "P2002") throw new ValidationExceptionError(409, "Bad Request: " + member.matricula + " - Já Cadastrado")
             if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
 
             throw new ValidationExceptionError(400, err); 
