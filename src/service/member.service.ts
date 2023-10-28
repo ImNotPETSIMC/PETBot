@@ -40,7 +40,6 @@ export default class MemberService {
             
             return {
                 data: name + " - " + member.matricula,
-                collection: member.status + "s"
             };
         } catch(err) { 
             if(err instanceof ValidationExceptionError) throw err;
