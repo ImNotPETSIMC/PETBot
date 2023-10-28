@@ -54,28 +54,24 @@ export default class MemberService {
     };
 
     public async remove(matricula: string) {
+        const requestRef = {matricula: normalizeString(matricula, "matricula")}
+
         try {
-            const requestRef = {matricula: normalizeString(matricula, "matricula")}
-            const membersDocRef = doc(firebaseDB, "members", requestRef.matricula);
-            const pmDocRef = collection(firebaseDB, "members_projects");
-            const snap = await getDoc(membersDocRef);
-            const pmSnap = await getDocs(pmDocRef);
             
-            
-            if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.matricula + " - Member not found"); 
-            await deleteDoc(membersDocRef);
-            pmSnap.docs.map( async (doc) => { 
-                await updateDoc(doc.ref, {
-                    [ requestRef.matricula ]: deleteField()
-                })
+            const member = await prisma.member.delete({
+                where : {
+                    matricula: requestRef.matricula
+                }
             });
-            
+        
             return {
-                name: snap.data().name,
-                matricula: snap.data().matricula
+                name: member.name,
+                matricula: member.matricula
             };
+
         } catch(err) { 
             if(err instanceof ValidationExceptionError) throw err;
+            if(err.code == "P2025") throw new ValidationExceptionError(404, requestRef.matricula + " - Member not found");
             if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
 
             throw new ValidationExceptionError(400, err); 
@@ -180,17 +176,15 @@ export default class MemberService {
 
     public async show(status: string) {
         try {
-            const docRef = collection(firebaseDB, "members");
-            const pmDocRef = collection(firebaseDB, "members_projects");
+            const results = await prisma.member.findMany({
+                where : {
+                    status: status
+                }
+            });
 
-            const snap = await getDocs(docRef);
-            const pmSnap = await getDocs(pmDocRef);
-
-            const results = snap.docs.map((doc) => (doc.data()));
             const members = results.map((data) => { 
                 if(data.status == status) {
-                    const member = new Member(data.name, data.base64Photo, data.matricula, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status, []);
-                    pmSnap.docs.map((doc) => { if (doc.get(data.matricula)) member.projects.push(" " + doc.id) });
+                    const member = new Member(data.name, data.base64Photo, data.matricula, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status, data.member_projects);
                     if(!member.projects.length) member.projects.push("🚫")     
                     return { ...member };
                 }
