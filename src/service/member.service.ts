@@ -154,26 +154,24 @@ export default class MemberService {
     };
 
     public async search(matricula: string) {
+        const requestRef = {matricula: normalizeString(matricula, "matricula")}
+        
         try {
-            const requestRef = {matricula: normalizeString(matricula, "matricula")}
-            const docRef = doc(firebaseDB, "members", requestRef.matricula);
-            const pmDocRef = collection(firebaseDB, "members_projects");
-          
-            const snap = await getDoc(docRef);
-            const pmSnap = await getDocs(pmDocRef);
+            const data = await prisma.member.delete({
+                where : {
+                    matricula: requestRef.matricula
+                }
+            });
             
-            const data = snap.data()!;
-            
-            if(!snap.exists()) throw new ValidationExceptionError(404, requestRef.matricula + " - Member not found"); 
-            const member = new Member(data.name, data.base64Photo, data.matricula, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status, []);      
-            pmSnap.docs.map((doc) => { if (doc.get(requestRef.matricula)) member.projects.push(" " + doc.id) });
+            const member = new Member(data.name, data.base64Photo, data.matricula, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status, []);
             if(!member.projects.length) member.projects.push("🚫")
-            
+
             return {
                 data: member
             };
         } catch(err) { 
             if(err instanceof ValidationExceptionError) throw err;
+            if(err.code == "P2025") throw new ValidationExceptionError(404, requestRef.matricula + " - Member not found");
             if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
             
             throw new ValidationExceptionError(400, err); 
