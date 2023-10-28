@@ -92,12 +92,12 @@ Using the "project_show" command you can retrieve all PET-SIMC projects register
 <h1>Instructions</h1>
 
 <ul><h3>Requirements:</h3> 
-    <li>Firestore</li>
+    <li>Firestore</li>ss
     <li>Discord App</li>
 </ul>
 
 
-Create a Firebase Database app in (https://firebase.google.com/) and insert it's credentials into .env as show in .env.example.<br>
+Create a MongoDB Database app in (https://www.mongodb.com) and insert it's credentials into .env as show in .env.example.<br>
 Create a Discord app in (https://discord.com/developers/applications) and insert it's token and client-id into .env as show in .env.example.
 
 After setting up, you can start the project with: 
