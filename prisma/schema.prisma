@@ -19,4 +19,5 @@ model Member {
   instagram_url String
   lattes_url String
   status String
+  member_projects String[]
 }

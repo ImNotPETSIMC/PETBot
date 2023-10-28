@@ -35,13 +35,14 @@ export default class MemberService {
                     instagram_url: member.instagram_url,
                     linkedin_url: member.linkedin_url,
                     lattes_url: member.lattes_url, 
-                    admission_year: member.admission_year
+                    admission_year: member.admission_year,
+                    member_projects: []
                 }
             });
             
             return {
                 data: name + " - " + member.matricula,
-                collection: collection
+                collection: member.status + "s"
             };
         } catch(err) { 
             if(err instanceof ValidationExceptionError) throw err;
