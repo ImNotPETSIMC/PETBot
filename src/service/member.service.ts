@@ -1,7 +1,5 @@
 import Axios from "axios";
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
-import { firebaseDB } from "../firebaseConfig";
-import { collection, deleteDoc, deleteField, doc, getDoc, getDocs, setDoc, updateDoc } from "firebase/firestore";
 import { isValidURL } from "../helper/isValidURL";
 import { normalizeString } from "../helper/normalizeString";
 import { Member } from "../classes";
@@ -119,28 +117,21 @@ export default class MemberService {
     };
 
     public async status(matricula: string, status: string) {
+        const requestRef = { matricula: normalizeString(matricula, "matricula"), status: status };
+        
         try {
-            const requestRef = { matricula: normalizeString(matricula, "matricula"), status: status };
-            const docRef = doc(firebaseDB, "members", requestRef.matricula);
-            const snap = await getDoc(docRef);
-
-            if(!snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.matricula + " - Não Encontrado"); 
-            await setDoc(docRef, { 
-                status: requestRef.status,
-            }, { merge: true });
-            
-            if(status.includes("Ex")){
-                const pmDocsSnap = await getDocs(collection(firebaseDB, "members_projects"));
-                pmDocsSnap.docs.map( async (doc) => { 
-                    await updateDoc(doc.ref, {
-                        [ requestRef.matricula ]: deleteField()
-                    })
-                });
-            };
+            const member = await prisma.member.update({
+                where: {
+                    matricula: requestRef.matricula
+                },
+                data: {
+                  status: requestRef.status,
+                },
+            })
             
             return {
-                name: snap.data().name,
-                matricula: snap.data().matricula,
+                name: member.name,
+                matricula: member.matricula,
                 status: requestRef.status
             };
         } catch(err) { 
