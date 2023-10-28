@@ -21,3 +21,12 @@ model Member {
   status String
   projects String[]
 }
+
+model Project {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+  description String
+  base64Photo String
+  status String
+  type String
+}
