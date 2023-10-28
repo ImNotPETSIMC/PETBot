@@ -3,8 +3,6 @@ import { ValidationExceptionError } from "../exceptions/ValidationExceptionError
 import { isValidURL } from "../helper/isValidURL";
 import { normalizeString } from "../helper/normalizeString";
 import { Project } from "../classes";
-import { firebaseDB } from "../firebaseConfig";
-import { collection, deleteDoc, deleteField, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { prisma } from "../prismaConfig";
 
 export default class ProjectService {
