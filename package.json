@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/ImNotPETSIMC/PETBot#readme",
   "devDependencies": {
-    "prisma": "^5.4.2",
+    "prisma": "^5.5.2",
     "tsup": "^7.1.0",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6"
