@@ -79,19 +79,15 @@ export default class MemberService {
     };
 
     public async update(matricula: string, attribute: string, data: string) {
+        const requestRef = { matricula: normalizeString(matricula, "matricula"), attribute: attribute, data: data };
+        
         try {
-            const requestRef = { matricula: normalizeString(matricula, "matricula"), attribute: attribute, data: data };
-            const collection = "members";
-            const docRef = doc(firebaseDB, collection, requestRef.matricula);
-            const snap = await getDoc(docRef);
-
-            if(!snap.exists()) throw new ValidationExceptionError(400, "Bad Request: " + requestRef.matricula + " - Não Encontrado"); 
             if(attribute.includes("_url") && !isValidURL(data)) throw new ValidationExceptionError(400, "Bad Request: Not Valid URL"); 
             if(attribute.includes("admission_year")) if(isNaN(Number(data))) throw new ValidationExceptionError(400, "Bad Request: Not Valid Admission Year"); 
             if(attribute === "matricula") requestRef.data = normalizeString(data, "matricula");
             if(attribute === "photo_url") {
                 const response = await Axios.get(data, {responseType: 'arraybuffer'});
-                    
+                
                 if(response.headers["content-length"] > 943718) {
                     throw new ValidationExceptionError(413, "File over 0.9MiB");
                 }
@@ -100,13 +96,19 @@ export default class MemberService {
                 requestRef.attribute = "base64Photo";
             };
 
-            await setDoc(docRef, { 
-                [requestRef.attribute]: requestRef.data,
-            }, { merge: true });
+            const member = await prisma.member.update({
+                where: {
+                    matricula: requestRef.matricula
+                },
+                data: {
+                  [requestRef.attribute]: requestRef.data,
+                },
+            })
 
+            
             return {
-                name: snap.data().name,
-                matricula: snap.data().matricula
+                name: member.name,
+                matricula: member.matricula
             };
         } catch(err) { 
             if(err instanceof ValidationExceptionError) throw err;
