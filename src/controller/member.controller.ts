@@ -93,7 +93,7 @@ export class MemberController {
       🛠️ Projetos - ${response.data.projects}`
       
       const embed = new Embed(response.data.matricula + " - " + response.data.name, description, "2E8598");
-      const buffer =  Buffer.from(response.data.photo_url, 'base64');
+      const buffer =  Buffer.from(response.data.base64Photo, 'base64');
       const type = await fileTypeFromBuffer(buffer).then(response => response!.ext);
 
       const file = {
