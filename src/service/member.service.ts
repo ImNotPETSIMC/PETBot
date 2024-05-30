@@ -1,14 +1,12 @@
 import Axios, { AxiosError } from "axios";
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
-import { normalizeString } from "../helper/normalizeString";
-import { prisma } from "../prismaConfig";
-import { MemberCreateRequestSchema, MemberSearchRequestSchema, MemberUpdateRequestSchema } from "../schemas/member.schemas";
+import { MemberCreateRequestSchema, MemberRemoveRequestSchema, MemberSearchRequestSchema, MemberUpdateRequestSchema } from "../schemas/member.schemas";
 import { config } from "../config";
 
 export default class MemberService {
     public async register(member: Zod.infer<typeof MemberCreateRequestSchema>) {
         try {
-            const { data } = await Axios.post(config.API_URL + '/member', { ...member })
+            const { data } = await Axios.post(config.API_URL + '/member', { data: {...member}, role: "admin" })
             
             return {
                 data: data.name + " - " + data.matricula,
@@ -21,25 +19,17 @@ export default class MemberService {
         }
     };
 
-    public async remove(matricula: string) {
-        const requestRef = {matricula: normalizeString(matricula, "matricula")}
-
+    public async remove(member: Zod.infer<typeof MemberRemoveRequestSchema>) {
         try {
+            const { data } = await Axios.delete(config.API_URL + '/member', { data: { data: member, role: "admin" }})
             
-            const member = await prisma.member.delete({
-                where : {
-                    matricula: requestRef.matricula
-                }
-            });
-        
             return {
-                name: member.name,
-                matricula: member.matricula
+                name: data.data.name,
+                matricula: data.data.matricula
             };
-
         } catch(err) { 
             if(err instanceof ValidationExceptionError) throw err;
-            if(err.code == "P2025") throw new ValidationExceptionError(404, requestRef.matricula + " - Member not found");
+            if(err instanceof AxiosError) throw new ValidationExceptionError(err.response!.status, err.response?.data.error)
             if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
 
             throw new ValidationExceptionError(400, err); 
@@ -56,6 +46,7 @@ export default class MemberService {
             };
         } catch(err) { 
             if(err instanceof ValidationExceptionError) throw err;
+            if(err instanceof AxiosError) throw new ValidationExceptionError(err.response!.status, err.response?.data.error)
             if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
 
             throw new ValidationExceptionError(400, err); 

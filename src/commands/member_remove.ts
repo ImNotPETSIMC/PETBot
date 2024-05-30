@@ -13,14 +13,14 @@ export const data = new SlashCommandBuilder()
 
 export const execute = async (interaction: CommandInteraction) => {
   await interaction.deferReply();
-  
+
   const getOption = (option: string) => <string>interaction.options.get(option)!.value;
-  
-  const matricula = getOption("matricula");
-  
+
+  const query = { matricula: getOption("matricula") };
+
   const memberController = new MemberController();
 
-  const response = (await memberController.remove(matricula))!;
-  
+  const response = (await memberController.remove(query))!;
+
   interaction.editReply(response);
 }

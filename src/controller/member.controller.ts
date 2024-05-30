@@ -2,7 +2,7 @@ import { fileTypeFromBuffer } from "file-type";
 import { Embed } from "../classes";
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
 import MemberService from "../service/member.service";
-import { MemberCreateRequestSchema, MemberSearchRequestSchema, MemberUpdateRequestSchema } from "../schemas/member.schemas";
+import { MemberCreateRequestSchema, MemberRemoveRequestSchema, MemberSearchRequestSchema, MemberUpdateRequestSchema } from "../schemas/member.schemas";
 import { handleZodIssues } from "../helper/handleZodIssues";
 
 export class MemberController {
@@ -30,11 +30,11 @@ export class MemberController {
     }
   };
 
-  public async remove(matricula: string) {
+  public async remove(member: Zod.infer<typeof MemberRemoveRequestSchema>) {
     const memberService = new MemberService();
 
     try {
-      const response = await memberService.remove(matricula);
+      const response = await memberService.remove(member);
 
       return { 
         embeds: [ new Embed("🗑️ - Remotion Completed", response.matricula + " - " + response.name  + " deleted.", "279732")]
