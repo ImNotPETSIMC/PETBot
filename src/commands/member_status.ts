@@ -23,12 +23,14 @@ export const execute = async (interaction: CommandInteraction) => {
   
   const getOption = (option: string) => <string>interaction.options.get(option)!.value;
   
-  const matricula = getOption("matricula");
-  const status = getOption("status");
+  const query = {
+    matricula:          getOption("matricula"),
+    status:             getOption("status") && getOption("status")
+  }
 
   const memberController = new MemberController();
 
-  const response = (await memberController.status(matricula, status))!;
+  const response = (await memberController.status(query))!;
   
   interaction.editReply(response);
 }

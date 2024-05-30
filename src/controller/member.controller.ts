@@ -1,14 +1,22 @@
 import { fileTypeFromBuffer } from "file-type";
-import { Embed, Member } from "../classes";
+import { Embed } from "../classes";
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
 import MemberService from "../service/member.service";
+import { MemberCreateRequestSchema, MemberSearchRequestSchema, MemberUpdateRequestSchema } from "../schemas/member.schemas";
+import { handleZodIssues } from "../helper/handleZodIssues";
 
 export class MemberController {
-  public async register(member: Member) {
+  public async register(member: Zod.infer<typeof MemberCreateRequestSchema>) {
     const memberService = new MemberService();
-
+    
     try {
-      const response = await memberService.register(member);
+      const result = MemberCreateRequestSchema.safeParse(member);
+      
+      if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message); 
+
+      const { data } = result;
+
+      const response = await memberService.register(data);
 
       return { 
         embeds: [ new Embed("✅ - Success", response.data + " added to Membros", "279732")]
@@ -40,11 +48,11 @@ export class MemberController {
     }
   };
 
-  public async status(matricula: string, status: string) {
+  public async status(member: Zod.infer<typeof MemberUpdateRequestSchema>) {
     const memberService = new MemberService();
 
     try {
-      const response = await memberService.status(matricula, status);
+      const response = await memberService.status(member);
 
       return { 
         embeds: [ new Embed("✅ - Success", response.matricula + " - " + response.name +"'s status" + " updated to " + response.status + ".", "279732")]
@@ -58,14 +66,13 @@ export class MemberController {
     }
   };
 
-  public async update(matricula: string, attribute: string, data: string) {
+  public async update(member: Zod.infer<typeof MemberUpdateRequestSchema>) {
     const memberService = new MemberService();
-
     try {
-      const response = await memberService.update(matricula, attribute, data);
+      const response = await memberService.update(member);
 
       return { 
-        embeds: [ new Embed("✅ - Success", response.matricula + " - " + response.name +"'s " + attribute + " updated.", "279732")]
+        embeds: [ new Embed("✅ - Success", response.matricula + " - " + response.name + " updated.", "279732")]
       };
     } catch (error) {
       if (error instanceof ValidationExceptionError) {
@@ -76,43 +83,40 @@ export class MemberController {
     }
   };
 
-  public async search(matricula: string) {
+  public async search(member: Zod.infer<typeof MemberSearchRequestSchema>) {
+
     const memberService = new MemberService();
 
     try {
-      const response = await memberService.search(matricula);
-      
-      const description = `
-      👤 Status - ${response.data.status}\n
-      📅 Ano de Admissão -  ${response.data.admission_year}\n
-      📧 Email - ${response.data.email}\n
-      🖥️ Github - [Acessar Github](${response.data.github_url})\n
-      📷 Instagram - [Acessar Instagram](${response.data.instagram_url})\n
-      💼 LinkedIn - [Acessar LinkedIn](${response.data.linkedin_url})\n
-      📚 Lattes - [Acessar Lattes](${response.data.lattes_url})\n
-      🛠️ Projetos - ${response.data.projects}`
-      
-      const embed = new Embed(response.data.matricula + " - " + response.data.name, description, "2E8598");
-      const buffer =  Buffer.from(response.data.base64Photo, 'base64');
-      const type = await fileTypeFromBuffer(buffer).then(response => response!.ext);
+      const response = await memberService.search(member);
+      const registers = await Promise.all(response.data.map(async (data: any) => { 
+        const member = {...data};
+        const description =
+          `👤 Status - ${member.status}` +
+          `\n\n 📅 Ano de Admissão -  ${member.admission_year}` +
+          `\n\n 📧 Email - ${member.email}` +
+          `${member.github_url          ? '\n\n 🖥️ Github - [Acessar Github]('       + member.github_url         + ')' : ''}` +
+          `${member.instagram_url       ? '\n\n 📷 Instagram - [Acessar Instagram](' + member.instagram_url      + ')' : ''}` +
+          `${member.linkedin_url        ? '\n\n 💼 LinkedIn - [Acessar LinkedIn]('   + member.linkedin_url       + ')' : ''}` +
+          `${member.lattes_url          ? '\n\n 📚 Lattes - [Acessar Lattes]('       + member.lattes_url         + ')' : ''}` +
+          `\n\n 🛠️ Projetos - ${member.projects.join(', ')}`;
 
-      const file = {
-        attachment: buffer, name: response.data.matricula + "." + type
-      }
+        const buffer = Buffer.from(member.photo, 'base64');
+        const type = await fileTypeFromBuffer(buffer).then(response => response!.ext);
+        const file = { attachment: buffer, name: member.matricula + "." + type };
+        const embed = new Embed(member.matricula + " - " + member.name, description, "2E8598",  "attachment://" + file.name );
+        
+        return { embeds: [embed], files: [file]};
+      }));
+      
 
       return { 
-        embeds: [ {
-          title: embed.title, 
-          description: embed.description, 
-          color: embed.color,
-          thumbnail: { url: "attachment://" + file.name }
-        }],
-        files: [ file ]
+        data: registers
       };
     } catch (error) {
       if (error instanceof ValidationExceptionError) {
         return { 
-          embeds: [ new Embed("❌ Error - " + error.code, error.message, "9F2727") ]
+          data: [{ embeds: [ new Embed("❌ Error - " + error.code, error.message, "9F2727") ]}]
         };
       }
     }
@@ -124,36 +128,32 @@ export class MemberController {
     try {
       const response = await memberService.show(status);
       const registers = await Promise.all(response.data.map(async (data: any) => { 
-        const member = new Member(data.name, data.photo_url, data.matricula, data.admission_year, data.email, data.github_url, data.instagram_url, data.linkedin_url, data.lattes_url, data.status, data.projects);
-        const description = `
-        👤 Status - ${member.status}\n
-        📅 Ano de Admissão -  ${member.admission_year}\n
-        📧 Email - ${member.email}\n
-        🖥️ Github - [Acessar Github](${member.github_url})\n
-        📷 Instagram - [Acessar Instagram](${member.instagram_url})\n
-        💼 LinkedIn - [Acessar LinkedIn](${member.linkedin_url})\n
-        📚 Lattes - [Acessar Lattes](${member.lattes_url})\n
-        🛠️ Projetos - ${member.projects}`;
-        
-        const buffer =  Buffer.from(member.photo_url, 'base64');
+        const member = {...data};
+        const description =
+        `👤 Status - ${member.status}` +
+        `\n\n 📅 Ano de Admissão -  ${member.admission_year}` +
+        `\n\n 📧 Email - ${member.email}` +
+        `${member.github_url          ? '\n\n 🖥️ Github - [Acessar Github]('       + member.github_url         + ')' : ''}` +
+        `${member.instagram_url       ? '\n\n 📷 Instagram - [Acessar Instagram](' + member.instagram_url      + ')' : ''}` +
+        `${member.linkedin_url        ? '\n\n 💼 LinkedIn - [Acessar LinkedIn]('   + member.linkedin_url       + ')' : ''}` +
+        `${member.lattes_url          ? '\n\n 📚 Lattes - [Acessar Lattes]('       + member.lattes_url         + ')' : ''}` +
+        `\n\n 🛠️ Projetos - ${member.projects.join(', ')}`
+
+        const buffer = Buffer.from(member.photo, 'base64');
         const type = await fileTypeFromBuffer(buffer).then(response => response!.ext);
-        const file = { attachment: buffer, name: member.matricula + "." + type }
+        const file = { attachment: buffer, name: member.matricula + "." + type };
         const embed = new Embed(member.matricula + " - " + member.name, description, "2E8598",  "attachment://" + file.name );
         
-        return { embed, file };
+        return { embeds: [embed], files: [file]};
       }));
 
-      const embeds = registers.map(register => register.embed);
-      const files = registers.map(register => register.file);
-
       return { 
-        embeds: embeds,
-        files: files
+        data: registers
       };
     } catch (error) {
       if (error instanceof ValidationExceptionError) {
         return { 
-          embeds: [ new Embed("❌ Error - " + error.code, error.message, "9F2727") ]
+          data: [{ embeds: [ new Embed("❌ Error - " + error.code, error.message, "9F2727") ]}]
         };
       }
     }
