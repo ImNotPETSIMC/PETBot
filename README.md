@@ -15,15 +15,13 @@ Uses Firestore as main form of storage.
 
 <h3>Member Register</h3>
 <img src="src/assets/member_register.png" title="Member Register" width=50% height=50%>></img>
-Using the "member_register" command you can register a new PET-SIMC member/ex-member.<br>
-Photos are downloaded and stored in Firestore, limited to 1MiB.  
+Using the "member_register" command you can register a new PET-SIMC member/ex-member.<br> 
 
 -----
 
 <h3>Member Update</h3>
 <img src="src/assets/member_update.png" title="Member Update" width=50% height=50%>></img>
 Using the "member_update" command you can update a PET-SIMC member/ex-member information.<br>
-Photos are downloaded and stored in Firestore, limited to 1MiB.  
 
 -----
 
@@ -36,18 +34,6 @@ Using the "member_remove" command you can delete a PET-SIMC member/ex-member reg
 <h3>Member Search</h3>
 <img src="src/assets/member_search.png" title="Member Search" width=50% height=50%>></img>
 Using the "member_search" command you can retrieve a specific PET-SIMC member/ex-member register.<br>
-
------
-
-<h3>Member Status</h3>
-<img src="src/assets/member_status.png" title="Member Status" width=50% height=50%>></img>
-Using the "member_status" command you can update a PET-SIMC member/ex-member status to member or ex-member.<br>
-
------
-
-<h3>Member Show</h3>
-<img src="src/assets/member_show.png" title="Member Show" width=50% height=50%>></img>
-Using the "member_show" command you can retrieve all PET-SIMC member/ex-member registers.<br>
 
 -----
 
@@ -92,12 +78,12 @@ Using the "project_show" command you can retrieve all PET-SIMC projects register
 <h1>Instructions</h1>
 
 <ul><h3>Requirements:</h3> 
-    <li>Firestore</li>ss
+    <li>PETApi</li>ss
     <li>Discord App</li>
 </ul>
 
 
-Create a MongoDB Database app in (https://www.mongodb.com) and insert it's credentials into .env as show in .env.example.<br>
+Insert a PETApi's deploy url into .env as show in .env.example.<br>
 Create a Discord app in (https://discord.com/developers/applications) and insert it's token and client-id into .env as show in .env.example.
 
 After setting up, you can start the project with: 

@@ -62,23 +62,6 @@ export default class MemberService {
         }
     };
 
-    public async status(member: Zod.infer<typeof MemberUpdateRequestSchema>) {       
-        try {
-            const { data } = await Axios.put(config.API_URL + '/member', { ...member })
-            
-            return {
-                name: data.name,
-                matricula: data.matricula,
-                status: data.status
-            };
-        } catch(err) { 
-            if(err instanceof ValidationExceptionError) throw err;
-            if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
-
-            throw new ValidationExceptionError(400, err); 
-        }
-    };
-
     public async search(member: Zod.infer<typeof MemberSearchRequestSchema>) {    
         try {
             const { data } = await Axios.get(config.API_URL + '/member', { params: { ...member }})
@@ -94,33 +77,6 @@ export default class MemberService {
                 data: members
             };
         } catch(err) { 
-            if(err instanceof ValidationExceptionError) throw err;
-            if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
-            
-            throw new ValidationExceptionError(400, err); 
-        }
-    };
-
-    public async show(status: string) {
-        try {
-            const { data } = await Axios.get(config.API_URL + '/member', { params: { status: "aa"}})
-
-            const members = data.data.members.map((data) => { 
-                if(!data.projects.length) data.projects.push("🚫")     
-                return { ...data };
-            });
-
-            if(!members.toString().length) throw new ValidationExceptionError(404,"No members with status " + status + " found"); 
-            
-            return {
-                data: members
-            };
-        } catch(err) { 
-
-            if (err instanceof AxiosError) { 
-                if(err.response) throw new ValidationExceptionError(422, err.response?.data.errors[0].message)
-                throw new ValidationExceptionError(422, err.message) 
-            }
             if(err instanceof ValidationExceptionError) throw err;
             if(err.toString()) throw new ValidationExceptionError(400, err.toString()); 
             
