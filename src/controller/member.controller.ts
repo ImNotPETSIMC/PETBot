@@ -34,7 +34,13 @@ export class MemberController {
     const memberService = new MemberService();
 
     try {
-      const response = await memberService.remove(member);
+      const result = MemberCreateRequestSchema.safeParse(member);
+      
+      if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message); 
+
+      const { data } = result;
+
+      const response = await memberService.remove(data);
 
       return { 
         embeds: [ new Embed("🗑️ - Remotion Completed", response.matricula + " - " + response.name  + " deleted.", "279732")]
