@@ -15,7 +15,7 @@ export const data = new SlashCommandBuilder()
 export const execute = async (interaction: CommandInteraction) => {
   await interaction.deferReply();
 
-  const query = { matricula: getOption("matricula", interaction) };
+  const query = { matricula: getOption("matricula", interaction, true)! };
 
   const memberController = new MemberController();
 
