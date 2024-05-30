@@ -1,5 +1,6 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { MemberController } from "../controller/member.controller";
+import { getOption } from "../helper/getOption";
 
 export const data = new SlashCommandBuilder()
   .setName("member_update")
@@ -81,24 +82,22 @@ export const data = new SlashCommandBuilder()
 export const execute = async (interaction: CommandInteraction) => {
   await interaction.deferReply();
   
-  const getOption = (option: string) => interaction.options.get(option)?.value ? interaction.options.get(option)?.value?.toString() : undefined;
-  
   const query = {
     matricula: interaction.options.get("matricula")!.value!.toString(),
-    ...getOption("name")                && { name: getOption("name") },
-    ...getOption("photo_url")           && { photo: getOption("photo_url") },
-    ...getOption("email")               && { email: getOption("email") },
-    ...getOption("admission_year")      && { admission_year: <number>interaction.options.get("admission_year")!.value },
-    ...getOption("favorite_pillar")     && { favorite_pillar: getOption("favorite_pillar") },
-    ...getOption("github_url")          && { github_url: getOption("github_url") },
-    ...getOption("instagram_url")       && { instagram_url: getOption("instagram_url") },
-    ...getOption("linkedin_url")        && { linkedin_url: getOption("linkedin_url") },
-    ...getOption("lattes_url")          && { lattes_url: getOption("lattes_url") },
-    ...getOption("spotify_track_url")   && { spotify_track_url: getOption("spotify_track_url") },
-    ...getOption("status")              && { status: getOption("status") },
-    ...getOption("hobby")               && { hobby: getOption("hobby") },
-    ...getOption("place_of_birth")      && { place_of_birth: getOption("place_of_birth") },
-    ...getOption("course_curriculum")   && { course_curriculum: <number>interaction.options.get("course_curriculum")!.value }
+    ...getOption("name", interaction)                && { name: getOption("name", interaction) },
+    ...getOption("photo_url", interaction)           && { photo: getOption("photo_url", interaction) },
+    ...getOption("email", interaction)               && { email: getOption("email", interaction) },
+    ...getOption("admission_year", interaction)      && { admission_year: <number>interaction.options.get("admission_year")!.value },
+    ...getOption("favorite_pillar", interaction)     && { favorite_pillar: getOption("favorite_pillar", interaction) },
+    ...getOption("github_url", interaction)          && { github_url: getOption("github_url", interaction) },
+    ...getOption("instagram_url", interaction)       && { instagram_url: getOption("instagram_url", interaction) },
+    ...getOption("linkedin_url", interaction)        && { linkedin_url: getOption("linkedin_url", interaction) },
+    ...getOption("lattes_url", interaction)          && { lattes_url: getOption("lattes_url", interaction) },
+    ...getOption("spotify_track_url", interaction)   && { spotify_track_url: getOption("spotify_track_url", interaction) },
+    ...getOption("status", interaction)              && { status: getOption("status", interaction) },
+    ...getOption("hobby", interaction)               && { hobby: getOption("hobby", interaction) },
+    ...getOption("place_of_birth", interaction)      && { place_of_birth: getOption("place_of_birth", interaction) },
+    ...getOption("course_curriculum", interaction)   && { course_curriculum: <number>interaction.options.get("course_curriculum")!.value }
   }
 
   const memberController = new MemberController();

@@ -1,5 +1,6 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { MemberController } from "../controller/member.controller";
+import { getOption } from "../helper/getOption";
 
 export const data = new SlashCommandBuilder()
   .setName("member_remove")
@@ -14,9 +15,7 @@ export const data = new SlashCommandBuilder()
 export const execute = async (interaction: CommandInteraction) => {
   await interaction.deferReply();
 
-  const getOption = (option: string) => <string>interaction.options.get(option)!.value;
-
-  const query = { matricula: getOption("matricula") };
+  const query = { matricula: getOption("matricula", interaction) };
 
   const memberController = new MemberController();
 

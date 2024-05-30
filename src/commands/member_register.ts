@@ -1,5 +1,6 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { MemberController } from "../controller/member.controller";
+import { getOption } from "../helper/getOption";
 
 export const data = new SlashCommandBuilder()
   .setName("member_register")
@@ -81,23 +82,21 @@ export const data = new SlashCommandBuilder()
 export const execute = async (interaction: CommandInteraction) => {
   await interaction.deferReply();
 
-  const getOption = (option: string) => <string>interaction.options.get(option)!.value;
-
   const createMemberDTO = {
-    matricula: getOption("matricula"),
-    name: getOption("name"),
-    photo: getOption("photo_url"),
-    email: getOption("email"),
+    matricula: getOption("matricula", interaction),
+    name: getOption("name", interaction),
+    photo: getOption("photo_url", interaction),
+    email: getOption("email", interaction),
     admission_year: <number>interaction.options.get("admission_year")!.value,
-    favorite_pillar: getOption("favorite_pillar"),
-    github_url: getOption("github_url"),
-    instagram_url: getOption("instagram_url"),
-    linkedin_url: getOption("linkedin_url"),
-    lattes_url: getOption("lattes_url"),
-    spotify_track_url: getOption("spotify_track_url"),
-    status: getOption("status"),
-    hobby: getOption("hobby"),
-    place_of_birth: getOption("place_of_birth"),
+    favorite_pillar: getOption("favorite_pillar", interaction),
+    github_url: getOption("github_url", interaction),
+    instagram_url: getOption("instagram_url", interaction),
+    linkedin_url: getOption("linkedin_url", interaction),
+    lattes_url: getOption("lattes_url", interaction),
+    spotify_track_url: getOption("spotify_track_url", interaction),
+    status: getOption("status", interaction),
+    hobby: getOption("hobby", interaction),
+    place_of_birth: getOption("place_of_birth", interaction),
     course_curriculum: <number>interaction.options.get("course_curriculum")!.value,
     projects: []
   }
