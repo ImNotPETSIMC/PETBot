@@ -88,7 +88,7 @@ export default class MemberService {
                 return { ...data };
             });
 
-            if(!data.toString().length) throw new ValidationExceptionError(404,"No members found"); 
+            if(!members.toString().length) throw new ValidationExceptionError(404,"No members found"); 
             
             return {
                 data: members
