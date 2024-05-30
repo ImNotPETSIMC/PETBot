@@ -1,14 +1,14 @@
 # PETBot
 
 PETBot is a discord bot created to help managing and storing PET-SIMC related information.<br>
-Uses Firestore as main form of storage.
+Uses MongoDB as main form of storage.
 
 
 <h1>Features:</h1>
 
 <ul>
-    <li>Member Register / Update / Remove / Search / Status / Show</li>
-    <li>Project Register / Update / Remove / Search / Status / Show</li>
+    <li>Member Register / Update / Remove / Search</li>
+    <li>Project Register / Update / Remove / Search</li>
 </ul>
 
 -----
@@ -60,18 +60,6 @@ Using the "project_remove" command you can delete a PET-SIMC project register.<b
 <h3>Project Search</h3>
 <img src="src/assets/project_search.png" title="Project Search" width=50% height=50%>></img>
 Using the "project_search" command you can retrieve a specific PET-SIMC project register.<br>
-
------
-
-<h3>Project Status</h3>
-<img src="src/assets/project_status.png" title="Project Status" width=50% height=50%>></img>
-Using the "project_status" command you can update a PET-SIMC project status to "On-Going" or "Concluded".<br>
-
------
-
-<h3>Project Show</h3>
-<img src="src/assets/project_show.png" title="Project Show" width=50% height=50%>></img>
-Using the "project_show" command you can retrieve all PET-SIMC projects registers.<br>
 
 -----
 

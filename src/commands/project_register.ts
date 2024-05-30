@@ -1,6 +1,6 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { ProjectController } from "../controller/project.controller";
-import { Project } from "../classes";
+import { getOption } from "../helper/getOption";
 
 export const data = new SlashCommandBuilder()
   .setName("project_register")
@@ -8,6 +8,12 @@ export const data = new SlashCommandBuilder()
     option
       .setName('name')
       .setDescription('Nome do Projeto do PET-SIMC;')
+      .setRequired(true)
+  )
+  .addStringOption(option =>
+    option
+      .setName('subtitle')
+      .setDescription('Subtítulo para o Projeto do PET-SIMC;')
       .setRequired(true)
   )
   .addStringOption(option =>
@@ -40,20 +46,19 @@ export const data = new SlashCommandBuilder()
 
 export const execute = async (interaction: CommandInteraction) => {
   await interaction.deferReply();
-  
-  const getOption = (option: string) => <string>interaction.options.get(option)!.value;
 
-  const newProject = new Project(
-    getOption("name"), 
-    getOption("type"), 
-    getOption("photo_url"), 
-    getOption("description"),
-    getOption("status")
-  );
+  const createProjectDTO = {
+    name: getOption("name", interaction, true)!, 
+    subtitle: getOption("subtitle", interaction, true)!,
+    type: getOption("type", interaction, true)!, 
+    photo: getOption("photo_url", interaction, true)!, 
+    description: getOption("description", interaction, true)!,
+    status: getOption("status", interaction, true)!
+  }
 
   const projectController = new ProjectController();
 
-  const response = (await projectController.register(newProject))!;
+  const response = (await projectController.register(createProjectDTO))!;
   
   interaction.editReply(response);
 }

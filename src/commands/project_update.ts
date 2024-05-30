@@ -1,5 +1,6 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { ProjectController } from "../controller/project.controller";
+import { getOption } from "../helper/getOption";
 
 export const data = new SlashCommandBuilder()
   .setName("project_update")
@@ -30,15 +31,18 @@ export const data = new SlashCommandBuilder()
 export const execute = async (interaction: CommandInteraction) => {
   await interaction.deferReply();
   
-  const getOption = (option: string) => <string>interaction.options.get(option)!.value;
-  
-  const name = getOption("name");
-  const attribute = getOption("attribute");
-  const data = getOption("data");
+  const query = {
+    name: getOption("name", interaction, true)!, 
+    ...getOption("subtitle", interaction)            && { subtitle: getOption("subtitle", interaction) },
+    ...getOption("type", interaction)                && { type: getOption("type", interaction) },
+    ...getOption("description", interaction)         && { description: getOption("description", interaction) },
+    ...getOption("photo_url", interaction)           && { photo: getOption("photo_url", interaction) },
+    ...getOption("status", interaction)              && { status: getOption("status", interaction) },
+  }
 
   const projectController = new ProjectController();
 
-  const response = (await projectController.update(name, attribute, data))!;
+  const response = (await projectController.update(query))!;
   
   interaction.editReply(response);
 }

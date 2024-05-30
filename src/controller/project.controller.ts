@@ -1,187 +1,98 @@
 import { fileTypeFromBuffer } from "file-type";
-import { Embed, Project } from "../classes";
+import { Embed } from "../classes";
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
 import ProjectService from "../service/project.service";
+import { ProjectCreateRequestSchema, ProjectRemoveRequestSchema, ProjectSearchRequestSchema, ProjectUpdateRequestSchema } from "../schemas/project.schemas";
+import { handleZodIssues } from "../helper/handleZodIssues";
 
 export class ProjectController {
-  public async register(project: Project) {
+  public async register(project: Zod.infer<typeof ProjectCreateRequestSchema>) {
     const projectService = new ProjectService();
 
     try {
-      const response = await projectService.register(project);
+      const result = ProjectCreateRequestSchema.safeParse(project);
 
-      return { 
-        embeds: [ new Embed("✅ - Success", response.data + " added to Projetos", "279732")]
+      if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message);
+
+      const { data } = result;
+
+      const response = await projectService.register(data);
+
+      return {
+        embeds: [new Embed("✅ - Success", response.data + " added to Projetos", "279732")]
       };
     } catch (error) {
       if (error instanceof ValidationExceptionError) {
-        return { 
-          embeds: [ new Embed("❌ Error - "+ error.code, error.message, "9F2727") ]
+        return {
+          embeds: [new Embed("❌ Error - " + error.code, error.message, "9F2727")]
         };
       }
     }
   };
 
-  public async remove(name: string) {
+  public async remove(project: Zod.infer<typeof ProjectRemoveRequestSchema>) {
     const projectService = new ProjectService();
 
     try {
-      const response = await projectService.remove(name);
+      const response = await projectService.remove(project);
 
-      return { 
-        embeds: [ new Embed("🗑️ - Remotion Completed", response.name + " deleted.", "279732")]
+      return {
+        embeds: [new Embed("🗑️ - Remotion Completed", response.name + " deleted.", "279732")]
       };
     } catch (error) {
       if (error instanceof ValidationExceptionError) {
-        return { 
-          embeds: [ new Embed("❌ Error - " + error.code, error.message, "9F2727") ]
+        return {
+          embeds: [new Embed("❌ Error - " + error.code, error.message, "9F2727")]
         };
       }
     }
   };
 
-  public async status(name: string, status: string) {
+  public async update(project: Zod.infer<typeof ProjectUpdateRequestSchema>) {
     const projectService = new ProjectService();
-
     try {
-      const response = await projectService.status(name, status);
+      const response = await projectService.update(project);
 
-      return { 
-        embeds: [ new Embed("✅ - Success", response.name + " - " + response.name +"'s status" + " updated to " + response.status + ".", "279732")]
+      return {
+        embeds: [new Embed("✅ - Success", response.name + " updated.", "279732")]
       };
     } catch (error) {
       if (error instanceof ValidationExceptionError) {
-        return { 
-          embeds: [ new Embed("❌ Error - "+ error.code, error.message, "9F2727") ]
+        return {
+          embeds: [new Embed("❌ Error - " + error.code, error.message, "9F2727")]
         };
       }
     }
   };
 
-  public async update(name: string, attribute: string, data: string) {
+  public async search(project: Zod.infer<typeof ProjectSearchRequestSchema>) {
+
     const projectService = new ProjectService();
 
     try {
-      const response = await projectService.update(name, attribute, data);
-
-      return { 
-        embeds: [ new Embed("✅ - Success", response.name + "'s " + attribute + " updated.", "279732")]
-      };
-    } catch (error) {
-      if (error instanceof ValidationExceptionError) {
-        return { 
-          embeds: [ new Embed("❌ Error - "+ error.code, error.message, "9F2727") ]
-        };
-      }
-    }
-  };
-
-  public async search(name: string) {
-    const projectService = new ProjectService();
-
-    try {
-      const response = await projectService.search(name);
-      
-      const description = `
-      👤 Status - ${response.data.status}\n
-      📝 Tipo - ${response.data.type}\n
-      📙 Descrição -  ${response.data.description}
-      `;
-      
-      const embed = new Embed(response.data.name, description, "E8C342");
-      const buffer =  Buffer.from(response.data.base64Photo, 'base64');
-      const type = await fileTypeFromBuffer(buffer).then(response => response!.ext);
-
-      const file = {
-        attachment: buffer, name: response.data.name + "." + type
-      }
-
-      return { 
-        embeds: [ {
-          title: embed.title, 
-          description: embed.description, 
-          color: embed.color,
-          thumbnail: { url: "attachment://" + file.name }
-        }],
-        files: [ file ]
-      };
-    } catch (error) {
-      if (error instanceof ValidationExceptionError) {
-        return { 
-          embeds: [ new Embed("❌ Error - " + error.code, error.message, "9F2727") ]
-        };
-      }
-    }
-  };
-
-  public async add_member(project: string, member: string) {
-    const projectService = new ProjectService();
-
-    try {
-      const response = await projectService.add_member(project, member);
-
-      return { 
-        embeds: [ new Embed("✅ - Success", response.data.member.matricula + " - " + response.data.member.name + "  added to " + response.data.project.name, "279732")]
-      };
-    } catch (error) {
-      if (error instanceof ValidationExceptionError) {
-        return { 
-          embeds: [ new Embed("❌ Error - "+ error.code, error.message, "9F2727") ]
-        };
-      }
-    }
-  };
-
-  public async remove_member(project: string, member: string) {
-    const projectService = new ProjectService();
-
-    try {
-      const response = await projectService.remove_member(project, member);
-
-      return { 
-        embeds: [ new Embed("🗑️ - Remotion Completed", response.data.member + " - " + response.data.member_name + " was removed from " + response.data.project, "279732")]
-      };
-    } catch (error) {
-      if (error instanceof ValidationExceptionError) {
-        return { 
-          embeds: [ new Embed("❌ Error - "+ error.code, error.message, "9F2727") ]
-        };
-      }
-    }
-  };
-
-  public async show(status: string) {
-    const projectService = new ProjectService();
-
-    try {
-      const response = await projectService.show(status);
-      const registers = await Promise.all(response.data.map(async (data: any) => { 
-        const project = new Project(data.name, data.type, data.base64Photo, data.description, data.status);
+      const response = await projectService.search(project);
+      const registers = await Promise.all(response.data.map(async (data: any) => {
+        const project = { ...data };
         const description = `
-        👤 Status - ${project.status}\n
-        📝 Tipo - ${project.type}\n
-        📙 Descrição -  ${project.description}
-        `;
+          👤 Status - ${project.status}\n
+          📝 Tipo - ${project.type}\n
+          📙 Descrição -  ${project.description}`;
 
-        const buffer =  Buffer.from(project.photo_url, 'base64');
+        const buffer = Buffer.from(project.photo, 'base64');
         const type = await fileTypeFromBuffer(buffer).then(response => response!.ext);
-        const file = { attachment: buffer, name: project.name + "." + type }
-        const embed = new Embed(project.name, description, "E8C342",  "attachment://" + file.name);
-    
-        return { embed, file };
+        const file = { attachment: buffer, name: Date.now() + "." + type };
+        const embed = new Embed(project.name, description, "2E8598", "attachment://" + file.name);
+
+        return { embeds: [embed], files: [file] };
       }));
 
-      const embeds = registers.map(register => register.embed);
-      const files = registers.map(register => register.file);
-
-      return { 
-        embeds: embeds,
-        files: files
+      return {
+        data: registers
       };
     } catch (error) {
       if (error instanceof ValidationExceptionError) {
-        return { 
-          embeds: [ new Embed("❌ Error - " + error.code, error.message, "9F2727") ]
+        return {
+          data: [{ embeds: [new Embed("❌ Error - " + error.code, error.message, "9F2727")] }]
         };
       }
     }

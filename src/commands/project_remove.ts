@@ -1,5 +1,6 @@
 import { CommandInteraction, SlashCommandBuilder } from "discord.js";
 import { ProjectController } from "../controller/project.controller";
+import { getOption } from "../helper/getOption";
 
 export const data = new SlashCommandBuilder()
   .setName("project_remove")
@@ -14,13 +15,13 @@ export const data = new SlashCommandBuilder()
 export const execute = async (interaction: CommandInteraction) => {
   await interaction.deferReply();
   
-  const getOption = (option: string) => <string>interaction.options.get(option)!.value;
-  
-  const name = getOption("name");
+  const query = {
+    name: getOption("name", interaction, true)!
+  }
   
   const projectController = new ProjectController();
 
-  const response = (await projectController.remove(name))!;
+  const response = (await projectController.remove(query))!;
   
   interaction.editReply(response);
 }
