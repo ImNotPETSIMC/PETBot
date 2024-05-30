@@ -25,7 +25,6 @@ export default class ProjectService {
 
             return {
                 name: data.data.name,
-                matricula: data.data.matricula
             };
         } catch (err) {
             if (err instanceof ValidationExceptionError) throw err;
