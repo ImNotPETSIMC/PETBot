@@ -19,7 +19,7 @@ export class ProjectController {
       const response = await projectService.register(data);
 
       return {
-        embeds: [new Embed("✅ - Success", response.data + " added to Projetos", "279732")]
+        embeds: [new Embed("✅ - Success", response.data + " added to Projects", "279732")]
       };
     } catch (error) {
       if (error instanceof ValidationExceptionError) {
