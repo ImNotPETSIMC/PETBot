@@ -66,7 +66,7 @@ Using the "project_search" command you can retrieve a specific PET-SIMC project 
 <h1>Instructions</h1>
 
 <ul><h3>Requirements:</h3> 
-    <li>PETApi</li>ss
+    <li>PETApi</li>
     <li>Discord App</li>
 </ul>
 
