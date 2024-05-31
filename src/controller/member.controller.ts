@@ -81,8 +81,11 @@ export class MemberController {
         const member = {...data};
         const description =
           `👤 Status - ${member.status}` +
-          `\n\n 📅 Ano de Admissão -  ${member.admission_year}` +
+          `\n\n 📅 Ingresso no PET -  ${member.admission_year}` +
           `\n\n 📧 Email - ${member.email}` +
+          `${member.favorite_pillar     ? '\n\n 🏛️ Pilar Favorito - ' + member.favorite_pillar : ''}` +
+          `${member.place_of_birth      ? '\n\n 🏙️ Naturalidade - ' + member.place_of_birth : ''}` +
+          `${member.hobby               ? '\n\n 🎈 Hobby - ' + member.hobby : ''}` +
           `${member.github_url          ? '\n\n 🖥️ Github - [Acessar Github]('       + member.github_url         + ')' : ''}` +
           `${member.instagram_url       ? '\n\n 📷 Instagram - [Acessar Instagram](' + member.instagram_url      + ')' : ''}` +
           `${member.linkedin_url        ? '\n\n 💼 LinkedIn - [Acessar LinkedIn]('   + member.linkedin_url       + ')' : ''}` +

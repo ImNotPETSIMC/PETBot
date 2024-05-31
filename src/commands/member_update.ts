@@ -42,6 +42,18 @@ export const data = new SlashCommandBuilder()
   )
   .addStringOption(option =>
     option
+      .setName('place_of_birth')
+      .setDescription('Naturalidade do Membro do PET-SIMC;')
+      .setRequired(false)
+  )
+  .addStringOption(option =>
+    option
+      .setName('hobby')
+      .setDescription('Hobby Favorito do Membro do PET-SIMC;')
+      .setRequired(false)
+  )
+  .addStringOption(option =>
+    option
       .setName('github_url')
       .setDescription('URL do Github do Membro do PET-SIMC;')
       .setRequired(false)

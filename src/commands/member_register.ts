@@ -28,6 +28,12 @@ export const data = new SlashCommandBuilder()
       .setDescription('E-mail do Membro do PET-SIMC;')
       .setRequired(true)
   )
+  .addStringOption(option =>
+    option
+      .setName('place_of_birth')
+      .setDescription('Naturalidade do Membro do PET-SIMC;')
+      .setRequired(false)
+  )
   .addNumberOption(option =>
     option
       .setName('admission_year')
@@ -45,6 +51,12 @@ export const data = new SlashCommandBuilder()
     option
       .setName('favorite_pillar')
       .setDescription('Pilar Favorito do Membro do PET-SIMC;')
+      .setRequired(false)
+  )
+  .addStringOption(option =>
+    option
+      .setName('hobby')
+      .setDescription('Hobby Favorito do Membro do PET-SIMC;')
       .setRequired(false)
   )
   .addStringOption(option =>
