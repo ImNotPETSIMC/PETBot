@@ -34,7 +34,7 @@ export class MemberController {
     const memberService = new MemberService();
 
     try {
-      const result = MemberCreateRequestSchema.safeParse(member);
+      const result = MemberRemoveRequestSchema.safeParse(member);
       
       if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message); 
 
@@ -57,7 +57,13 @@ export class MemberController {
   public async update(member: Zod.infer<typeof MemberUpdateRequestSchema>) {
     const memberService = new MemberService();
     try {
-      const response = await memberService.update(member);
+      const result = MemberUpdateRequestSchema.safeParse(member);
+      
+      if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message); 
+
+      const { data } = result;
+
+      const response = await memberService.update(data);
 
       return { 
         embeds: [ new Embed("✅ - Success", response.matricula + " - " + response.name + " updated.", "279732")]
@@ -76,7 +82,13 @@ export class MemberController {
     const memberService = new MemberService();
 
     try {
-      const response = await memberService.search(member);
+      const result = MemberUpdateRequestSchema.safeParse(member);
+      
+      if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message); 
+
+      const { data } = result;
+
+      const response = await memberService.search(data);
       const registers = await Promise.all(response.data.map(async (data: any) => { 
         const member = {...data};
         const description =

@@ -34,7 +34,13 @@ export class ProjectController {
     const projectService = new ProjectService();
 
     try {
-      const response = await projectService.remove(project);
+      const result = ProjectRemoveRequestSchema.safeParse(project);
+
+      if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message);
+
+      const { data } = result;
+
+      const response = await projectService.remove(data);
 
       return {
         embeds: [new Embed("🗑️ - Remotion Completed", response.name + " deleted.", "279732")]
@@ -51,7 +57,13 @@ export class ProjectController {
   public async update(project: Zod.infer<typeof ProjectUpdateRequestSchema>) {
     const projectService = new ProjectService();
     try {
-      const response = await projectService.update(project);
+      const result = ProjectUpdateRequestSchema.safeParse(project);
+
+      if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message);
+
+      const { data } = result;
+
+      const response = await projectService.update(data);
 
       return {
         embeds: [new Embed("✅ - Success", response.name + " updated.", "279732")]
@@ -70,7 +82,14 @@ export class ProjectController {
     const projectService = new ProjectService();
 
     try {
-      const response = await projectService.search(project);
+      const result = ProjectSearchRequestSchema.safeParse(project);
+
+      if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message);
+
+      const { data } = result;
+
+      const response = await projectService.search(data);
+
       const registers = await Promise.all(response.data.map(async (data: any) => {
         const project = { ...data };
         const description = `

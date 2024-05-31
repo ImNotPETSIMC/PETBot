@@ -34,7 +34,7 @@ export class TutorController {
     const tutorService = new TutorService();
 
     try {
-      const result = TutorCreateRequestSchema.safeParse(tutor);
+      const result = TutorRemoveRequestSchema.safeParse(tutor);
       
       if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message); 
 
@@ -57,7 +57,13 @@ export class TutorController {
   public async update(tutor: Zod.infer<typeof TutorUpdateRequestSchema>) {
     const tutorService = new TutorService();
     try {
-      const response = await tutorService.update(tutor);
+      const result = TutorUpdateRequestSchema.safeParse(tutor);
+      
+      if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message); 
+
+      const { data } = result;
+
+      const response = await tutorService.update(data);
 
       return { 
         embeds: [ new Embed("✅ - Success", response.name + " updated.", "279732")]
@@ -76,7 +82,14 @@ export class TutorController {
     const tutorService = new TutorService();
 
     try {
-      const response = await tutorService.search(tutor);
+      const result = TutorSearchRequestSchema.safeParse(tutor);
+
+      if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message);
+
+      const { data } = result;
+
+      const response = await tutorService.search(data);
+
       const registers = await Promise.all(response.data.map(async (data: any) => { 
         const tutor = {...data};
         const description =

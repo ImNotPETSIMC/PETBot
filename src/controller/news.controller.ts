@@ -34,7 +34,13 @@ export class NewsController {
     const newsService = new NewsService();
 
     try {
-      const response = await newsService.remove(news);
+      const result = NewsRemoveRequestSchema.safeParse(news);
+
+      if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message);
+
+      const { data } = result;
+
+      const response = await newsService.remove(data);
 
       return {
         embeds: [new Embed("🗑️ - Remotion Completed", response.name + " deleted.", "279732")]
@@ -51,7 +57,13 @@ export class NewsController {
   public async update(news: Zod.infer<typeof NewsUpdateRequestSchema>) {
     const newsService = new NewsService();
     try {
-      const response = await newsService.update(news);
+      const result = NewsUpdateRequestSchema.safeParse(news);
+
+      if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message);
+
+      const { data } = result;
+
+      const response = await newsService.update(data);
 
       return {
         embeds: [new Embed("✅ - Success", response.name + " updated.", "279732")]
@@ -70,7 +82,13 @@ export class NewsController {
     const newsService = new NewsService();
 
     try {
-      const response = await newsService.search(news);
+      const result = NewsUpdateRequestSchema.safeParse(news);
+
+      if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message);
+
+      const { data } = result;
+
+      const response = await newsService.search(data);
       const registers = await Promise.all(response.data.map(async (data: any) => {
         const news = { ...data };
         const description = `

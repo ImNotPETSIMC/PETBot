@@ -197,5 +197,4 @@ export const TutorRemoveRequestSchema = Zod.object({
     name: Zod
         .string()
         .min(1, { message: "Field name must not be empty." })
-        .optional()
 });

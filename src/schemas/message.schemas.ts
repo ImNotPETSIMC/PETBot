@@ -1,19 +1,5 @@
 import Zod from "zod";
 
-export const MessageCreateRequestSchema = Zod.object({
-    name: Zod
-        .string({ required_error: "Field name must compose request body." })
-        .min(1, { message: "Field name must not be empty." }),
-
-    email: Zod
-        .string({ required_error: "Field email must compose request body." })
-        .email({ message: "Field email must be filled with valid email." }),
-
-    content: Zod
-        .string({ required_error: "Field content must compose request body." })
-        .min(1, { message: "Field content must not be empty." }),
-});
-
 export const MessageSearchRequestSchema = Zod.object({
     name: Zod
         .string()
