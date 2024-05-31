@@ -18,12 +18,6 @@ export const data = new SlashCommandBuilder()
   )
   .addStringOption(option =>
     option
-      .setName('photo_url')
-      .setDescription('URL da Foto do Membro do PET-SIMC;')
-      .setRequired(false)
-  )
-  .addStringOption(option =>
-    option
       .setName('email')
       .setDescription('E-mail do Membro do PET-SIMC;')
       .setRequired(false)
@@ -85,7 +79,6 @@ export const execute = async (interaction: CommandInteraction) => {
   const query = {
     ...getOption("matricula", interaction)           && {matricula: getOption("matricula", interaction)},
     ...getOption("name", interaction)                && { name: getOption("name", interaction) },
-    ...getOption("photo_url", interaction)           && { photo: getOption("photo_url", interaction) },
     ...getOption("email", interaction)               && { email: getOption("email", interaction) },
     ...getOption("admission_year", interaction)      && { admission_year: <number>interaction.options.get("admission_year")!.value },
     ...getOption("favorite_pillar", interaction)     && { favorite_pillar: getOption("favorite_pillar", interaction) },
