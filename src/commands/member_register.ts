@@ -28,33 +28,33 @@ export const data = new SlashCommandBuilder()
       .setDescription('E-mail do Membro do PET-SIMC;')
       .setRequired(true)
   )
-  .addStringOption(option =>
+  .addNumberOption(option =>
     option
-      .setName('place_of_birth')
-      .setDescription('Naturalidade do Membro do PET-SIMC;')
-      .setRequired(false)
+    .setName('admission_year')
+    .setDescription('Ano de Entrada do Membro no PET-SIMC;')
+    .setRequired(true)
   )
   .addNumberOption(option =>
     option
-      .setName('admission_year')
-      .setDescription('Ano de Entrada do Membro no PET-SIMC;')
-      .setRequired(true)
-  )
-  .addNumberOption(option =>
-    option
-      .setName('course_curriculum')
+    .setName('course_curriculum')
       .setDescription('Grade Disciplinar do Membro do PET-SIMC;')
       .setRequired(true)
-  )
-  .addStringOption(option =>
-    option
+    )
+    .addStringOption(option =>
+      option
       .setName('status')
       .setDescription('Status do Membro do PET-SIMC;')
       .setRequired(true)
       .addChoices({ name: "Membro", value: "Membro" }, { name: "Ex-Membro", value: "Ex-Membro" })
-  )
-  .addStringOption(option =>
-    option
+    )
+    .addStringOption(option =>
+      option
+        .setName('place_of_birth')
+        .setDescription('Naturalidade do Membro do PET-SIMC;')
+        .setRequired(false)
+    )
+    .addStringOption(option =>
+      option
       .setName('favorite_pillar')
       .setDescription('Pilar Favorito do Membro do PET-SIMC;')
       .setRequired(false)
