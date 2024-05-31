@@ -25,7 +25,13 @@ export const data = new SlashCommandBuilder()
   .addNumberOption(option =>
     option
       .setName('admission_year')
-      .setDescription('Ano de Admissão na UFU-MC do Membro do PET-SIMC;')
+      .setDescription('Ano de Entrada do Membro no PET-SIMC;')
+      .setRequired(false)
+  )
+  .addNumberOption(option =>
+    option
+      .setName('course_curriculum')
+      .setDescription('Grade Disciplinar do Membro do PET-SIMC;')
       .setRequired(false)
   )
   .addStringOption(option =>
@@ -89,20 +95,20 @@ export const execute = async (interaction: CommandInteraction) => {
   await interaction.deferReply();
 
   const query = {
-    ...getOption("matricula", interaction)           && {matricula: getOption("matricula", interaction)},
-    ...getOption("name", interaction)                && { name: getOption("name", interaction) },
-    ...getOption("email", interaction)               && { email: getOption("email", interaction) },
-    ...getOption("admission_year", interaction)      && { admission_year: <number>interaction.options.get("admission_year")!.value },
-    ...getOption("favorite_pillar", interaction)     && { favorite_pillar: getOption("favorite_pillar", interaction) },
-    ...getOption("github_url", interaction)          && { github_url: getOption("github_url", interaction) },
-    ...getOption("instagram_url", interaction)       && { instagram_url: getOption("instagram_url", interaction) },
-    ...getOption("linkedin_url", interaction)        && { linkedin_url: getOption("linkedin_url", interaction) },
-    ...getOption("lattes_url", interaction)          && { lattes_url: getOption("lattes_url", interaction) },
-    ...getOption("spotify_track_url", interaction)   && { spotify_track_url: getOption("spotify_track_url", interaction) },
-    ...getOption("status", interaction)              && { status: getOption("status", interaction) },
-    ...getOption("hobby", interaction)               && { hobby: getOption("hobby", interaction) },
-    ...getOption("place_of_birth", interaction)      && { place_of_birth: getOption("place_of_birth", interaction) },
-    ...getOption("course_curriculum", interaction)   && { course_curriculum: <number>interaction.options.get("course_curriculum")!.value }
+    ...getOption("matricula", interaction) && { matricula: getOption("matricula", interaction) },
+    ...getOption("name", interaction) && { name: getOption("name", interaction) },
+    ...getOption("email", interaction) && { email: getOption("email", interaction) },
+    ...getOption("admission_year", interaction) && { admission_year: <number>interaction.options.get("admission_year")!.value },
+    ...getOption("favorite_pillar", interaction) && { favorite_pillar: getOption("favorite_pillar", interaction) },
+    ...getOption("github_url", interaction) && { github_url: getOption("github_url", interaction) },
+    ...getOption("instagram_url", interaction) && { instagram_url: getOption("instagram_url", interaction) },
+    ...getOption("linkedin_url", interaction) && { linkedin_url: getOption("linkedin_url", interaction) },
+    ...getOption("lattes_url", interaction) && { lattes_url: getOption("lattes_url", interaction) },
+    ...getOption("spotify_track_url", interaction) && { spotify_track_url: getOption("spotify_track_url", interaction) },
+    ...getOption("status", interaction) && { status: getOption("status", interaction) },
+    ...getOption("hobby", interaction) && { hobby: getOption("hobby", interaction) },
+    ...getOption("place_of_birth", interaction) && { place_of_birth: getOption("place_of_birth", interaction) },
+    ...getOption("course_curriculum", interaction) && { course_curriculum: <number>interaction.options.get("course_curriculum")!.value }
   }
 
   const memberController = new MemberController();

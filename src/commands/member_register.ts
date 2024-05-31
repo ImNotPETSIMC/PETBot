@@ -37,7 +37,13 @@ export const data = new SlashCommandBuilder()
   .addNumberOption(option =>
     option
       .setName('admission_year')
-      .setDescription('Ano de Admissão na UFU-MC do Membro do PET-SIMC;')
+      .setDescription('Ano de Entrada do Membro no PET-SIMC;')
+      .setRequired(true)
+  )
+  .addNumberOption(option =>
+    option
+      .setName('course_curriculum')
+      .setDescription('Grade Disciplinar do Membro do PET-SIMC;')
       .setRequired(true)
   )
   .addStringOption(option =>
