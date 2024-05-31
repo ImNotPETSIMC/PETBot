@@ -2,6 +2,10 @@ import * as member_register from "./member_register";
 import * as member_search from "./member_search";
 import * as member_update from "./member_update";
 import * as member_remove from "./member_remove";
+import * as tutor_register from "./tutor_register";
+import * as tutor_search from "./tutor_search";
+import * as tutor_update from "./tutor_update";
+import * as tutor_remove from "./tutor_remove";
 import * as project_register from "./project_register";
 import * as project_search from "./project_search";
 import * as project_update from "./project_update";
@@ -16,6 +20,10 @@ export const commands = {
     member_search,
     member_update,
     member_remove,
+    tutor_register,
+    tutor_search,
+    tutor_update,
+    tutor_remove,
     project_register,
     project_search,
     project_update,
