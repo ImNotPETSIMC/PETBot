@@ -14,6 +14,9 @@ import * as news_register from "./news_register";
 import * as news_search from "./news_search";
 import * as news_update from "./news_update";
 import * as news_remove from "./news_remove";
+import * as message_search from "./message_search";
+import * as message_update from "./message_update";
+import * as message_remove from "./message_remove";
 
 export const commands = {
     member_register,
@@ -31,5 +34,8 @@ export const commands = {
     news_register,
     news_search,
     news_update,
-    news_remove
+    news_remove,
+    message_search,
+    message_update,
+    message_remove
 };

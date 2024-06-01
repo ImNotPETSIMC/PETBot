@@ -1,6 +1,10 @@
 import Zod from "zod";
 
 export const MessageSearchRequestSchema = Zod.object({
+    id: Zod
+        .string({ required_error: "Field id must compose request body." })
+        .optional(),
+
     name: Zod
         .string()
         .optional(),
@@ -29,7 +33,7 @@ export const MessageUpdateRequestSchema = Zod.object({
     id: Zod
         .string({ required_error: "Field id must compose request body." })
         .min(1, { message: "Field id must not be empty." }),
-    
+
     name: Zod
         .string()
         .min(1, { message: "Field name must not be empty." })
