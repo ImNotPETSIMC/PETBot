@@ -31,7 +31,6 @@ export default class MessageService {
 
             if (err instanceof ValidationExceptionError) throw err;
             if (err instanceof AxiosError) {
-                console.log(err.response)
                 if(err.response) throw new ValidationExceptionError(err.response.status, err.response.data.error) 
             }
             if (err.toString()) throw new ValidationExceptionError(400, err.toString());
