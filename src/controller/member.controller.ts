@@ -1,9 +1,9 @@
 import { fileTypeFromBuffer } from "file-type";
 import { Embed } from "../classes";
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
-import MemberService from "../service/member.service";
-import { MemberCreateRequestSchema, MemberRemoveRequestSchema, MemberSearchRequestSchema, MemberUpdateRequestSchema } from "../schemas/member.schemas";
 import { handleZodIssues } from "../helper/handleZodIssues";
+import { MemberCreateRequestSchema, MemberRemoveRequestSchema, MemberSearchRequestSchema, MemberUpdateRequestSchema } from "../schemas/member.schemas";
+import MemberService from "../service/member.service";
 
 export class MemberController {
   public async register(member: Zod.infer<typeof MemberCreateRequestSchema>) {
@@ -82,7 +82,7 @@ export class MemberController {
     const memberService = new MemberService();
 
     try {
-      const result = MemberUpdateRequestSchema.safeParse(member);
+      const result = MemberSearchRequestSchema.safeParse(member);
       
       if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message); 
 

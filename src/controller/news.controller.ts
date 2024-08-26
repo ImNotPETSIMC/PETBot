@@ -1,9 +1,9 @@
 import { fileTypeFromBuffer } from "file-type";
 import { Embed } from "../classes";
 import { ValidationExceptionError } from "../exceptions/ValidationExceptionError";
-import NewsService from "../service/news.service";
-import { NewsCreateRequestSchema, NewsRemoveRequestSchema, NewsSearchRequestSchema, NewsUpdateRequestSchema } from "../schemas/news.schemas";
 import { handleZodIssues } from "../helper/handleZodIssues";
+import { NewsCreateRequestSchema, NewsRemoveRequestSchema, NewsSearchRequestSchema, NewsUpdateRequestSchema } from "../schemas/news.schemas";
+import NewsService from "../service/news.service";
 
 export class NewsController {
   public async register(news: Zod.infer<typeof NewsCreateRequestSchema>) {
@@ -82,7 +82,7 @@ export class NewsController {
     const newsService = new NewsService();
 
     try {
-      const result = NewsUpdateRequestSchema.safeParse(news);
+      const result = NewsSearchRequestSchema.safeParse(news);
 
       if (!result.success) throw new ValidationExceptionError(400, "Bad Request: " + result.error.issues.map(handleZodIssues)[0].message);
 
