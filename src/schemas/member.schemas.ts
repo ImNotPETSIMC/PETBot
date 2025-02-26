@@ -56,7 +56,6 @@ export const MemberCreateRequestSchema = Zod.object({
         .string()
         .includes("open.spotify.com/track/", { message: "Field spotify_track_url must be filled with valid Spotify Track url." })
         .url({ message: "Field spotify_track_url must be filled with valid url." })
-        .transform(str => str.replace("https://open.spotify.com/track/", "").replace("/", ""))
         .optional(),
 
     status: Zod
@@ -78,11 +77,9 @@ export const MemberCreateRequestSchema = Zod.object({
         .min(2016, { message: "Field course_curriculum must be a valid one." }),
 
     projects: Zod
-        .array(
-            Zod
-                .string({ required_error: "Field name must compose request body." })
-                .min(1, { message: "Field name must not be empty." }),
-            { required_error: "Field projects must compose body" }),
+        .string()
+        .transform((str) => str.split(", "))
+        .optional(),
 });
 
 export const MemberSearchRequestSchema = Zod.object({
@@ -158,8 +155,12 @@ export const MemberSearchRequestSchema = Zod.object({
         .string()
         .includes("open.spotify.com/track/", { message: "Field spotify_track_url must be filled with valid Spotify Track url." })
         .url({ message: "Field spotify_track_url must be filled with valid url." })
-        .transform(str => str.replace("https://open.spotify.com/track/", "").replace("/", ""))
         .optional(),
+    
+    projects: Zod
+        .string()
+        .transform((str) => str.split(", "))
+        .optional()
 });
 
 export const MemberUpdateRequestSchema = Zod.object({
@@ -242,14 +243,11 @@ export const MemberUpdateRequestSchema = Zod.object({
         .includes("open.spotify.com/track/", { message: "Field spotify_track_url must be filled with valid Spotify Track url." })
         .url({ message: "Field spotify_track_url must be filled with valid url." })
         .optional(),
-
+    
     projects: Zod
-        .array(
-            Zod
-                .string({ required_error: "Field name must compose request body." })
-                .min(1, { message: "Field name must not be empty." }),
-            { required_error: "Field projects must compose body" })
-        .optional()
+        .string()
+        .transform((str) => str.split(", "))
+        .optional(),
 });
 
 export const MemberRemoveRequestSchema = Zod.object({

@@ -90,6 +90,12 @@ export const data = new SlashCommandBuilder()
   )
   .addStringOption(option =>
     option
+      .setName('projects')
+      .setDescription('Projetos do Membro do PET-SIMC. Preencha separado por espaço e vírgula.')
+      .setRequired(false)
+  )
+  .addStringOption(option =>
+    option
       .setName('status')
       .setDescription('Status do Membro do PET-SIMC;')
       .setRequired(false)
@@ -115,6 +121,7 @@ export const execute = async (interaction: CommandInteraction) => {
     ...getOption("status", interaction) && { status: getOption("status", interaction) },
     ...getOption("hobby", interaction) && { hobby: getOption("hobby", interaction) },
     ...getOption("place_of_birth", interaction) && { place_of_birth: getOption("place_of_birth", interaction) },
+    ...getOption("projects", interaction) && { projects: getOption("projects", interaction) },
     ...getOption("course_curriculum", interaction) && { course_curriculum: <number>interaction.options.get("course_curriculum")!.value }
   }
 

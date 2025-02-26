@@ -91,6 +91,12 @@ export const data = new SlashCommandBuilder()
   )
   .addStringOption(option =>
     option
+      .setName('projects')
+      .setDescription('Projetos do Membro do PET-SIMC. Preencha separado por espaço e vírgula.')
+      .setRequired(false)
+  )
+  .addStringOption(option =>
+    option
       .setName('spotify_track_url')
       .setDescription('URL de uma música do Spotify para o card do Membro do PET-SIMC;')
       .setRequired(false)
@@ -116,7 +122,7 @@ export const execute = async (interaction: CommandInteraction) => {
     ...getOption("spotify_track_url", interaction) && { spotify_track_url: getOption("spotify_track_url", interaction) },
     ...getOption("hobby", interaction) && { hobby: getOption("hobby", interaction) },
     ...getOption("place_of_birth", interaction) && { place_of_birth: getOption("place_of_birth", interaction) },
-    projects: []
+    ...getOption("projects", interaction) && { projects: getOption("projects", interaction) },
   }
 
   const memberController = new MemberController();
