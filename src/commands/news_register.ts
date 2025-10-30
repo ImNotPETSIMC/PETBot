@@ -31,7 +31,7 @@ export const data = new SlashCommandBuilder()
     .setDescription("Registra uma nova notícia do do PET-SIMC.");
 
 export const execute = async (interaction: CommandInteraction) => {
-    await interaction.deferReply();
+    await interaction.deferReply({ ephemeral: true });
 
     const createNewsDTO = {
         name: getOption("name", interaction, true)!,

@@ -98,7 +98,7 @@ export const data = new SlashCommandBuilder()
   .setDescription("Busca o cadastro de um membro do PET-SIMC.");
 
 export const execute = async (interaction: CommandInteraction) => {
-  await interaction.deferReply();
+  await interaction.deferReply({ ephemeral: true });
 
   const query = {
     ...getOption("matricula", interaction) && { matricula: getOption("matricula", interaction) },

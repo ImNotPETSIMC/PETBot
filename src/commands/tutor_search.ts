@@ -74,7 +74,7 @@ export const data = new SlashCommandBuilder()
   .setDescription("Registra um novo tutor do PET-SIMC.");
 
 export const execute = async (interaction: CommandInteraction) => {
-  await interaction.deferReply();
+  await interaction.deferReply({ ephemeral: true });
 
   const query = {
     ...getOption("name", interaction) && { name: getOption("name", interaction) },

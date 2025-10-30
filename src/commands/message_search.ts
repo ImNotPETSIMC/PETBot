@@ -36,7 +36,7 @@ export const data = new SlashCommandBuilder()
     .setDescription("Busca o cadastro de uma mensagem ao PET-SIMC.");
 
 export const execute = async (interaction: CommandInteraction) => {
-    await interaction.deferReply();
+    await interaction.deferReply({ ephemeral: true });
 
     const query = {
         ...getOption("id", interaction)         && { id: getOption("id", interaction) },

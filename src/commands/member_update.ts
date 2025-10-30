@@ -104,7 +104,7 @@ export const data = new SlashCommandBuilder()
   .setDescription("Atualiza as informações de um membro do PET-SIMC.");
 
 export const execute = async (interaction: CommandInteraction) => {
-  await interaction.deferReply();
+  await interaction.deferReply({ ephemeral: true });
 
   const query = {
     matricula: interaction.options.get("matricula")!.value!.toString(),

@@ -45,7 +45,7 @@ export const data = new SlashCommandBuilder()
   .setDescription("Registra um novo projeto do PET-SIMC.");
 
 export const execute = async (interaction: CommandInteraction) => {
-  await interaction.deferReply();
+  await interaction.deferReply({ ephemeral: true });
 
   const createProjectDTO = {
     name: getOption("name", interaction, true)!, 

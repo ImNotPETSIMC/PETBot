@@ -104,7 +104,7 @@ export const data = new SlashCommandBuilder()
   .setDescription("Registra um novo membro do PET-SIMC.");
 
 export const execute = async (interaction: CommandInteraction) => {
-  await interaction.deferReply();
+  await interaction.deferReply({ ephemeral: true });
 
   const createMemberDTO = {
     matricula: getOption("matricula", interaction, true)!,

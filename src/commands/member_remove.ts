@@ -13,7 +13,7 @@ export const data = new SlashCommandBuilder()
   .setDescription("Deleta o cadastro de um membro do PET-SIMC.");
 
 export const execute = async (interaction: CommandInteraction) => {
-  await interaction.deferReply();
+  await interaction.deferReply({ ephemeral: true });
 
   const query = { matricula: getOption("matricula", interaction, true)! };
 
